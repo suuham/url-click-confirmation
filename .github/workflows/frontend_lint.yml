@@ -26,7 +26,6 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install Dependencies
-        working-directory: .
         run: pnpm install --frozen-lockfile
 
       - name: tsc
