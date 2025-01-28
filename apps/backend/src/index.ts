@@ -10,7 +10,7 @@ const app = new Hono<CustomEnv>()
 app.use(cors())
 
 app.get('/', (c) => {
-  return c.text('Hello Hono!')
+  return c.text('Hello!')
 })
 
 if (process.env.NODE_ENV === 'localhost') {
