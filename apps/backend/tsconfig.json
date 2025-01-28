@@ -1,0 +1,20 @@
+{
+  "extends": "@next-hono-monorepo/ts-config/base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "dist",
+    "module": "CommonJS",
+    "target": "ES2019",
+    "moduleResolution": "Node",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  }
+}
