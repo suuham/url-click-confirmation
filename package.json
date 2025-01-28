@@ -1,0 +1,29 @@
+{
+  "name": "next-hono-monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "frontend": "pnpm -F \"frontend\"",
+    "backend": "pnpm -F \"backend\"",
+    "dev": "turbo run dev --no-cache --parallel --continue",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "clean": "turbo run clean && rimraf node_modules",
+    "format": "prettier --write .",
+    "cspell": "cspell -c ./cspell.json './apps/*/src/**/*' './packages/*/src/**/*'"
+  },
+  "engines": {
+    "pnpm": ">=8.9.2",
+    "npm": "please_use_pnpm_instead"
+  },
+  "packageManager": "pnpm@8.15.7",
+  "devDependencies": {
+    "cspell": "^8.17.2",
+    "prettier": "^3.4.2",
+    "rimraf": "^5.0.10",
+    "turbo": "^2.3.3"
+  }
+}

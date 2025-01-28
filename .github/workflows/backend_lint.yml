@@ -1,0 +1,42 @@
+name: Run backend lint
+on:
+  push:
+    paths:
+      - apps/backend/src/**
+jobs:
+  lint:
+    name: Run lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.10.5
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: prisma generate
+        run: pnpm backend prisma:generate
+
+      - name: tsc
+        run: pnpm backend lint:tsc
+
+      - name: eslint
+        run: pnpm backend lint:eslint
+
+      - name: prettier
+        run: pnpm backend lint:prettier
+
+      - name: cspell
+        run: pnpm backend lint:cspell

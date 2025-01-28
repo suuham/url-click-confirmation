@@ -1,0 +1,35 @@
+{
+  "name": "@next-hono-monorepo/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint './**/*.{ts,tsx}'",
+    "lint:tsc": "tsc --noEmit",
+    "lint:eslint": "eslint src -c eslint.config.mjs",
+    "lint:prettier": "prettier --check src",
+    "lint:cspell": "cspell -c ../../cspell.json src/**/*",
+    "format:prettier": "prettier --write src"
+  },
+  "dependencies": {
+    "@next-hono-monorepo/common": "workspace:*",
+    "next": "15.1.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@next-hono-monorepo/eslint-config": "workspace:*",
+    "@next-hono-monorepo/ts-config": "workspace:*",
+    "@next/eslint-plugin-next": "^15.1.4",
+    "@types/node": "^20.12.7",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
+    "eslint-config-next": "^15.1.4",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "typescript": "5.7.3"
+  }
+}

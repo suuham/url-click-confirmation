@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  next-hono-monorepo_database:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: next-hono-monorepo_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - data-volume:/var/lib/next-hono-monorepo_database
+    ports:
+      - ${POSTGRES_PORT-5432}:5432
+
+volumes:
+  data-volume:
+    name: next-hono-monorepo_database_data_volume
