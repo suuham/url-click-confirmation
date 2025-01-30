@@ -10,13 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique @db.VarChar(256)
-  isBanned  Boolean  @default(false) @map("is_banned")
-  isDeleted Boolean  @default(false) @map("is_deleted")
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
+model CompanyViewUrl {
+  id          String   @id @default(cuid())
+  companyName String   @db.VarChar(256)
+  isViewed    Boolean  @default(false) @map("is_banned")
+  isDeleted   Boolean  @default(false) @map("is_deleted")
+  createdAt   DateTime @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
-  @@map("users")
+  @@map("company-view-urls")
 }
