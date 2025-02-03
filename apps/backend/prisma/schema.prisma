@@ -13,10 +13,10 @@ datasource db {
 model CompanyViewUrl {
   id          String   @id @default(cuid())
   companyName String   @db.VarChar(256)
-  isViewed    Boolean  @default(false) @map("is_banned")
+  isViewed    Boolean  @default(false) @map("is_viewed")
   isDeleted   Boolean  @default(false) @map("is_deleted")
-  createdAt   DateTime @default(now()) @db.Timestamp(0)
-  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  createdAt   DateTime @default(now()) @db.Timestamp(0) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamp(0) @map("updated_at")
 
   @@map("company-view-urls")
 }
