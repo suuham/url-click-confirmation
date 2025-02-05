@@ -12,8 +12,18 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "clean": "turbo run clean && rimraf node_modules",
-    "format": "prettier --write .",
-    "cspell": "cspell -c ./cspell.json './apps/*/src/**/*' './packages/*/src/**/*'"
+    "cspell": "cspell -c ./cspell.json './apps/*/src/**/*' './packages/*/src/**/*'",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "apps/backend/src/**/*.{ts,js,json}": [
+      "npx prettier --write",
+      "npx @biomejs/biome check --write"
+    ],
+    "apps/frontend/src/**/*.{ts,tsx,js,jsx,json}": [
+      "npx prettier --write",
+      "npx @biomejs/biome check --write"
+    ]
   },
   "engines": {
     "pnpm": ">=8.9.2",
@@ -22,6 +32,8 @@
   "packageManager": "pnpm@8.15.7",
   "devDependencies": {
     "cspell": "^8.17.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "prettier": "^3.4.2",
     "rimraf": "^5.0.10",
     "turbo": "^2.3.3"
