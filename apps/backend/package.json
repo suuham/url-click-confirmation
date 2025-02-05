@@ -11,8 +11,7 @@
     "lint:eslint": "eslint src -c eslint.config.mjs",
     "lint:prettier": "prettier --check src --config ../../.prettierrc.js",
     "lint:cspell": "cspell -c ../../cspell.json src/**/*",
-    "format:eslint": "eslint src --ext .js,.ts --fix",
-    "format:prettier": "prettier --write src --config ../../.prettierrc.js",
+    "format": "npx prettier --write ./src && npx @biomejs/biome check --write ./src",
     "prisma:generate": "prisma generate"
   },
   "prisma": {
