@@ -10,13 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model CompanyViewUrl {
-  id          String   @id @default(cuid())
-  companyName String   @db.VarChar(256)
-  isViewed    Boolean  @default(false) @map("is_viewed")
-  isDeleted   Boolean  @default(false) @map("is_deleted")
-  createdAt   DateTime @default(now()) @db.Timestamp(0) @map("created_at")
-  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamp(0) @map("updated_at")
+model Company {
+  id              String            @id @default(cuid())
+  name            String            @db.VarChar(256)
+  isDeleted       Boolean           @default(false) @map("is_deleted")
+  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt       DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  ReadApprovedUrl ReadApprovedUrl[]
 
-  @@map("company-view-urls")
+  @@map("companies")
+}
+
+model BaseUrl {
+  id              String            @id @default(cuid())
+  url             String            @db.VarChar(256)
+  isDeleted       Boolean           @default(false) @map("is_deleted")
+  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt       DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  ReadApprovedUrl ReadApprovedUrl[]
+
+  @@map("base_urls")
+}
+
+model ReadApprovedUrl {
+  id        String   @id @default(cuid())
+  isViewed  Boolean  @default(false) @map("is_viewed")
+  isDeleted Boolean  @default(false) @map("is_deleted")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+
+  baseUrlId String  @map("base_url_id")
+  baseUrl   BaseUrl @relation(fields: [baseUrlId], references: [id])
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id])
+
+  @@map("read_approved_urls")
 }

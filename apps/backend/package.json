@@ -21,7 +21,7 @@
   "dependencies": {
     "@hono/node-server": "^1.13.5",
     "@next-hono-monorepo/common": "workspace:*",
-    "@prisma/client": "6.2.1",
+    "@prisma/client": "6.3.1",
     "hono": "^4.6.16",
     "tsc-alias": "^1.8.8",
     "zod": "^3.24.1"
@@ -30,7 +30,7 @@
     "@next-hono-monorepo/eslint-config": "workspace:*",
     "@next-hono-monorepo/ts-config": "workspace:*",
     "@types/node": "^20.11.17",
-    "prisma": "^6.2.1",
+    "prisma": "^6.3.1",
     "tsx": "^4.19.2",
     "typescript": "5.7.3"
   }
