@@ -1,13 +1,14 @@
 import { RouteHandler } from "@hono/zod-openapi";
 import { z } from "zod";
-import { getReadApprovedUrlsRoute } from "~/routers/readApprovedUrl";
-import { GetRadApprovedUrlsResponseSchema } from "~/schema/readApprovedUrl";
+import { getAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
+import { GetAccessJudgmentUrlsResponseSchema } from "~/schema/accessJudgmentUrl";
 
-type GetRadApprovedUrlsResponse = z.infer<typeof GetRadApprovedUrlsResponseSchema>;
 
-export const getReadApprovedUrlsHandler: RouteHandler<typeof getReadApprovedUrlsRoute, {}> = async (c) => {
-    const response: GetRadApprovedUrlsResponse = {
-        readApprovedUrls: [
+type GetAccessJudgmentUrlsResponse = z.infer<typeof GetAccessJudgmentUrlsResponseSchema>;
+
+export const getAccessJudgmentUrlsHandler: RouteHandler<typeof getAccessJudgmentUrlsRoute, {}> = async (c) => {
+    const response: GetAccessJudgmentUrlsResponse = {
+        accessJudgmentUrls: [
             {
                 company: {
                     id: "1",
@@ -17,7 +18,7 @@ export const getReadApprovedUrlsHandler: RouteHandler<typeof getReadApprovedUrls
                     id: "1",
                     url: "https://google.com",
                 },
-                readApprovedUrl: {
+                accessJudgmentUrl: {
                     id: "1",
                     url: "https://google.com",
                     viewCount: 1,
