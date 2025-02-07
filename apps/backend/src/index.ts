@@ -3,15 +3,19 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 import type { CustomContext, CustomEnv } from '~/types/locals'
+import { router } from './routers'
+import { swaggerUI } from '@hono/swagger-ui'
 
 const port = 4000
 const app = new Hono<CustomEnv>()
 
 app.use(cors())
 
-app.get('/', (c) => {
-  return c.text('Hello!')
-})
+
+app.route('/', router)
+
+app.get('/ui', swaggerUI({ url: '/doc' }))
+
 
 if (process.env.NODE_ENV === 'localhost') {
   // eslint-disable-next-line no-console
