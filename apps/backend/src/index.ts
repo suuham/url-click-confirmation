@@ -12,13 +12,7 @@ const app = new Hono<CustomEnv>();
 app.use(cors());
 
 app.route("/", router);
-
 app.get("/ui", swaggerUI({ url: "/doc" }));
-
-if (process.env.NODE_ENV === "localhost") {
-	// eslint-disable-next-line no-console
-	console.log(`Server is running on port ${port}`);
-}
 
 app.onError((_, c: CustomContext) => {
 	return c.text("Internal Server Error", 500);
