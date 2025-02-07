@@ -9,7 +9,7 @@
     "start": "node dist/src/index.js",
     "lint:tsc": "tsc --noEmit",
     "lint:cspell": "cspell -c ../../cspell.json src/**/*",
-    "format:prettier": "prettier --write src --config ../../.prettierrc.js",
+    "format": "npx prettier --write ./src && npx @biomejs/biome check --write ./src",
     "prisma:generate": "prisma generate"
   },
   "prisma": {

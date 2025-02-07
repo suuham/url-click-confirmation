@@ -11,7 +11,7 @@
     "lint:eslint": "eslint src -c eslint.config.mjs",
     "lint:prettier": "prettier --check src",
     "lint:cspell": "cspell -c ../../cspell.json src/**/*",
-    "format:prettier": "prettier --write src"
+    "format": "npx prettier --write ./src && npx @biomejs/biome check --write ./src && npx stylelint 'src/**/*.scss' --fix"
   },
   "dependencies": {
     "@next-hono-monorepo/common": "workspace:*",
