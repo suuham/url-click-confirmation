@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const GetAccessJudgmentUrlsResponseSchema = z.object({
+export const getAccessJudgmentUrlsResponseSchema = z.object({
 	accessJudgmentUrls: z.array(
 		z.object({
 			company: z.object({
@@ -22,11 +22,11 @@ export const GetAccessJudgmentUrlsResponseSchema = z.object({
 	),
 });
 
-export const ViewAccessJudgmentUrlParamsSchema = z.object({
+export const viewAccessJudgmentUrlParamsSchema = z.object({
 	accessJudgmentUrlId: z.string(),
 });
 
-export const CreateAccessJudgmentUrlsRequestBodySchema = z.object({
+export const createAccessJudgmentUrlsRequestBodySchema = z.object({
 	accessJudgmentUrlInfo: z.array(
 		z.object({
 			companyName: z.string(),
@@ -35,7 +35,7 @@ export const CreateAccessJudgmentUrlsRequestBodySchema = z.object({
 	),
 });
 
-export const CreateAccessJudgmentUrlsResponseSchema = z.object({
+export const createAccessJudgmentUrlsResponseSchema = z.object({
 	accessJudgmentUrls: z.array(
 		z.object({
 			id: z.string(),

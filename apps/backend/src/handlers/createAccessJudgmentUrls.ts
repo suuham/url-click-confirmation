@@ -1,10 +1,10 @@
 import type { RouteHandler } from "@hono/zod-openapi";
 import type { z } from "zod";
 import type { createAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
-import type { CreateAccessJudgmentUrlsResponseSchema } from "~/schema/accessJudgmentUrl";
+import type { createAccessJudgmentUrlsResponseSchema } from "~/schema/accessJudgmentUrl";
 
 type CreateAccessJudgmentUrlsResponse = z.infer<
-	typeof CreateAccessJudgmentUrlsResponseSchema
+	typeof createAccessJudgmentUrlsResponseSchema
 >;
 
 export const createAccessJudgmentUrlsHandler: RouteHandler<
