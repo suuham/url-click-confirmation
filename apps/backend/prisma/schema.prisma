@@ -11,31 +11,31 @@ datasource db {
 }
 
 model Company {
-  id              String            @id @default(cuid())
-  name            String            @db.VarChar(256)
-  isDeleted       Boolean           @default(false) @map("is_deleted")
-  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt       DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
-  ReadApprovedUrl ReadApprovedUrl[]
+  id                 String               @id @default(cuid())
+  name               String               @db.VarChar(256)
+  createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt          DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  deletedAt          DateTime?            @map("deleted_at") @db.Timestamp(0)
+  accessJudgementUrls AccessJudgementUrl[]
 
   @@map("companies")
 }
 
 model BaseUrl {
-  id              String            @id @default(cuid())
-  url             String            @db.VarChar(256)
-  isDeleted       Boolean           @default(false) @map("is_deleted")
-  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt       DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
-  ReadApprovedUrl ReadApprovedUrl[]
+  id        String   @id @default(cuid())
+  title     String   @db.VarChar(256)
+  url       String   @map("url") @db.VarChar(256)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  AccessJudgementUrl AccessJudgementUrl[]
 
   @@map("base_urls")
 }
 
-model ReadApprovedUrl {
+model AccessJudgementUrl {
   id        String   @id @default(cuid())
-  isViewed  Boolean  @default(false) @map("is_viewed")
-  isDeleted Boolean  @default(false) @map("is_deleted")
+  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
 
@@ -44,6 +44,17 @@ model ReadApprovedUrl {
 
   companyId String  @map("company_id")
   company   Company @relation(fields: [companyId], references: [id])
+  AccessJudgementUrlLog AccessJudgementUrlLog[]
 
-  @@map("read_approved_urls")
+  @@map("access_judgement_urls")
+}
+
+model AccessJudgementUrlLog {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+
+  accessJudgementUrl   AccessJudgementUrl @relation(fields: [accessJudgementUrlId], references: [id])
+  accessJudgementUrlId String             @map("access_judgement_url_id")
+
+  @@map("access_judgement_url_logs")
 }
