@@ -6,7 +6,11 @@ help:
 
 .PHONY: up
 up: ## ローカルでコンテナを起動する
-	docker compose up
+	docker compose up -d
+
+.PHONY: logs
+logs: ## ローカルでコンテナのログを表示する
+	docker compose logs -f
 
 .PHONY: connect-db
 connect-db: ## ローカルでデータベースに接続する
