@@ -26,7 +26,7 @@ export const getAccessJudgementUrlsByCompanyIdsAndBaseUrlIds = async (
 	});
 };
 
-export const getAccessJudgementUrlsById = async (
+export const getAccessJudgementUrlById = async (
 	accessJudgementUrlId: string,
 ): Promise<AccessJudgementUrl | null> => {
 	return await prismaClient.accessJudgementUrl.findUnique({
