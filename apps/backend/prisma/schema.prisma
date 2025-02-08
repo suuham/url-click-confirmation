@@ -12,7 +12,7 @@ datasource db {
 
 model Company {
   id                 String               @id @default(cuid())
-  name               String               @db.VarChar(256)
+  name               String               @db.VarChar(256) @unique
   createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt          DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt          DateTime?            @map("deleted_at") @db.Timestamp(0)
@@ -24,7 +24,7 @@ model Company {
 model BaseUrl {
   id        String   @id @default(cuid())
   title     String   @db.VarChar(256)
-  url       String   @map("url") @db.VarChar(256)
+  url       String   @map("url") @db.VarChar(256) @unique
   deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)

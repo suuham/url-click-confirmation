@@ -42,6 +42,12 @@ CREATE TABLE "access_judgement_url_logs" (
     CONSTRAINT "access_judgement_url_logs_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateIndex
+CREATE UNIQUE INDEX "companies_name_key" ON "companies"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "base_urls_url_key" ON "base_urls"("url");
+
 -- AddForeignKey
 ALTER TABLE "access_judgement_urls" ADD CONSTRAINT "access_judgement_urls_base_url_id_fkey" FOREIGN KEY ("base_url_id") REFERENCES "base_urls"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
