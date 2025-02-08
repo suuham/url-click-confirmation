@@ -14,12 +14,30 @@ pnpm i
 cd apps/backend
 ```
 
-### 2. サーバの起動
+### 2. DBの立ち上げ・マイグレーション
+
+```shell
+make up
+```
+
+```shell
+npx prisma migrate dev --name init
+```
+
+### 3. サーバの起動
 
 ```shell
 pnpm run dev
 ```
 
-### 2. サーバにアクセス
+### 4. サーバにアクセス
 
 `http://localhost:4000/ui`にアクセスすると API ドキュメントが閲覧できます
+
+## その他
+
+### DBに接続したい場合
+
+```shell
+make connect-db
+```
