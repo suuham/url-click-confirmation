@@ -42,6 +42,22 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 				},
 			},
 		},
+		404: {
+			description: "Not Found",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
+				},
+			},
+		},
+		500: {
+			description: "Internal Server Error",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
+				},
+			},
+		},
 	},
 });
 
