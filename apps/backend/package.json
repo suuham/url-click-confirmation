@@ -8,8 +8,6 @@
     "predeploy": "pnpm prisma migrate deploy && pnpm prisma db seed",
     "start": "node dist/src/index.js",
     "lint:tsc": "tsc --noEmit",
-    "lint:eslint": "eslint src -c eslint.config.mjs",
-    "lint:prettier": "prettier --check src --config ../../.prettierrc.js",
     "lint:cspell": "cspell -c ../../cspell.json src/**/*",
     "format": "npx prettier --write ./src && npx @biomejs/biome check --write ./src",
     "prisma:generate": "prisma generate"
@@ -19,6 +17,8 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.5",
+    "@hono/swagger-ui": "^0.5.0",
+    "@hono/zod-openapi": "^0.18.4",
     "@next-hono-monorepo/common": "workspace:*",
     "@prisma/client": "6.3.1",
     "hono": "^4.6.16",
