@@ -5,6 +5,7 @@ import {
 	getAccessJudgmentUrlsResponseSchema,
 	viewAccessJudgmentUrlParamsSchema,
 } from "~/schema/accessJudgmentUrl";
+import { errorResponseSchema } from "~/schema/error";
 
 export const getAccessJudgmentUrlsRoute = createRoute({
 	path: "/access-judgement-urls",
@@ -64,6 +65,22 @@ export const createAccessJudgmentUrlsRoute = createRoute({
 			content: {
 				"application/json": {
 					schema: createAccessJudgmentUrlsResponseSchema,
+				},
+			},
+		},
+		400: {
+			description: "Bad Request",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
+				},
+			},
+		},
+		500: {
+			description: "Internal Server Error",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
 				},
 			},
 		},
