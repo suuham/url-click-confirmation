@@ -11,41 +11,42 @@ datasource db {
 }
 
 model Company {
-  id                 String               @id @default(cuid())
-  name               String               @db.VarChar(256) @unique
-  createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt          DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
-  deletedAt          DateTime?            @map("deleted_at") @db.Timestamp(0)
+  id                  String               @id @default(cuid())
+  name                String               @unique @db.VarChar(256)
+  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  deletedAt           DateTime?            @map("deleted_at") @db.Timestamp(0)
   accessJudgementUrls AccessJudgementUrl[]
 
   @@map("companies")
 }
 
 model BaseUrl {
-  id        String   @id @default(cuid())
-  title     String   @db.VarChar(256)
-  url       String   @map("url") @db.VarChar(256) @unique
-  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  id                 String               @id @default(cuid())
+  title              String               @db.VarChar(256)
+  url                String               @unique @map("url") @db.VarChar(256)
+  deletedAt          DateTime?            @map("deleted_at") @db.Timestamp(0)
+  createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt          DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
   AccessJudgementUrl AccessJudgementUrl[]
 
   @@map("base_urls")
 }
 
 model AccessJudgementUrl {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
 
   baseUrlId String  @map("base_url_id")
   baseUrl   BaseUrl @relation(fields: [baseUrlId], references: [id])
 
-  companyId String  @map("company_id")
-  company   Company @relation(fields: [companyId], references: [id])
+  companyId             String                  @map("company_id")
+  company               Company                 @relation(fields: [companyId], references: [id])
   AccessJudgementUrlLog AccessJudgementUrlLog[]
 
+  @@unique([baseUrlId, companyId])
   @@map("access_judgement_urls")
 }
 
