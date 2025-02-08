@@ -1,10 +1,11 @@
 import { createRoute } from "@hono/zod-openapi";
 import {
-	CreateAccessJudgmentUrlsRequestBodySchema,
-	CreateAccessJudgmentUrlsResponseSchema,
-	GetAccessJudgmentUrlsResponseSchema,
-	ViewAccessJudgmentUrlParamsSchema,
+	createAccessJudgmentUrlsRequestBodySchema,
+	createAccessJudgmentUrlsResponseSchema,
+	getAccessJudgmentUrlsResponseSchema,
+	viewAccessJudgmentUrlParamsSchema,
 } from "~/schema/accessJudgmentUrl";
+import { errorResponseSchema } from "~/schema/error";
 
 export const getAccessJudgmentUrlsRoute = createRoute({
 	path: "/access-judgement-urls",
@@ -15,7 +16,7 @@ export const getAccessJudgmentUrlsRoute = createRoute({
 			description: "OK",
 			content: {
 				"application/json": {
-					schema: GetAccessJudgmentUrlsResponseSchema,
+					schema: getAccessJudgmentUrlsResponseSchema,
 				},
 			},
 		},
@@ -28,7 +29,7 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 	description:
 		"アクセス判定URLの状態をアクセス済みにし、ベースURLにリダイレクト",
 	request: {
-		params: ViewAccessJudgmentUrlParamsSchema,
+		params: viewAccessJudgmentUrlParamsSchema,
 	},
 	responses: {
 		302: {
@@ -53,7 +54,7 @@ export const createAccessJudgmentUrlsRoute = createRoute({
 			required: true,
 			content: {
 				"application/json": {
-					schema: CreateAccessJudgmentUrlsRequestBodySchema,
+					schema: createAccessJudgmentUrlsRequestBodySchema,
 				},
 			},
 		},
@@ -63,7 +64,23 @@ export const createAccessJudgmentUrlsRoute = createRoute({
 			description: "Created",
 			content: {
 				"application/json": {
-					schema: CreateAccessJudgmentUrlsResponseSchema,
+					schema: createAccessJudgmentUrlsResponseSchema,
+				},
+			},
+		},
+		400: {
+			description: "Bad Request",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
+				},
+			},
+		},
+		500: {
+			description: "Internal Server Error",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
 				},
 			},
 		},

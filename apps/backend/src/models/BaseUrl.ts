@@ -1,0 +1,17 @@
+import type { BaseUrl } from "@prisma/client";
+import { prismaClient } from "~/lib/prisma";
+
+export const insertBaseUrls = async (
+	baseUrls: { title: string; url: string }[],
+): Promise<void> => {
+	await prismaClient.baseUrl.createMany({
+		data: baseUrls,
+		skipDuplicates: true,
+	});
+};
+
+export const getBaseUrlsByUrls = async (urls: string[]): Promise<BaseUrl[]> => {
+	return await prismaClient.baseUrl.findMany({
+		where: { url: { in: urls } },
+	});
+};
