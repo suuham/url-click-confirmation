@@ -15,3 +15,9 @@ export const getBaseUrlsByUrls = async (urls: string[]): Promise<BaseUrl[]> => {
 		where: { url: { in: urls } },
 	});
 };
+
+export const getBaseUrlById = async (id: string): Promise<BaseUrl | null> => {
+	return await prismaClient.baseUrl.findUnique({
+		where: { id },
+	});
+};
