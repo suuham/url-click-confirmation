@@ -69,6 +69,7 @@ export const getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds = async (
 ): Promise<AccessJudgmentUrl[]> => {
 	return await prismaClient.accessJudgmentUrl.findMany({
 		where: {
+			// biome-ignore lint/style/useNamingConvention:
 			OR: companyIdBaseUrlIdMapping.map(({ companyId, baseUrlId }) => ({
 				companyId,
 				baseUrlId,
