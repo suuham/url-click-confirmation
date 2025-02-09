@@ -6,5 +6,5 @@ export const getAccessJudgmentUrl = (
 ): string => {
 	const proto = c.req.header("x-forwarded-proto") || "http";
 	const host = c.req.header("host");
-	return `${proto}://${host}/access-judgment-url/${accessJudgmentUrlId}/view`;
+	return `${proto}://${host}/access-judgment-urls/${accessJudgmentUrlId}/view`;
 };

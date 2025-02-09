@@ -16,7 +16,7 @@ model Company {
   createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt           DateTime?            @map("deleted_at") @db.Timestamp(0)
-  accessJudgementUrls AccessJudgementUrl[]
+  accessJudgmentUrls AccessJudgmentUrl[]
 
   @@map("companies")
 }
@@ -28,12 +28,12 @@ model BaseUrl {
   deletedAt          DateTime?            @map("deleted_at") @db.Timestamp(0)
   createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt          DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
-  AccessJudgementUrl AccessJudgementUrl[]
+  AccessJudgmentUrl AccessJudgmentUrl[]
 
   @@map("base_urls")
 }
 
-model AccessJudgementUrl {
+model AccessJudgmentUrl {
   id        String    @id @default(cuid())
   deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
@@ -44,18 +44,18 @@ model AccessJudgementUrl {
 
   companyId             String                  @map("company_id")
   company               Company                 @relation(fields: [companyId], references: [id])
-  AccessJudgementUrlLog AccessJudgementUrlLog[]
+  AccessJudgmentUrlLog AccessJudgmentUrlLog[]
 
   @@unique([baseUrlId, companyId])
-  @@map("access_judgement_urls")
+  @@map("access_judgment_urls")
 }
 
-model AccessJudgementUrlLog {
+model AccessJudgmentUrlLog {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
 
-  accessJudgementUrl   AccessJudgementUrl @relation(fields: [accessJudgementUrlId], references: [id])
-  accessJudgementUrlId String             @map("access_judgement_url_id")
+  accessJudgmentUrl   AccessJudgmentUrl @relation(fields: [accessJudgmentUrlId], references: [id])
+  accessJudgmentUrlId String             @map("access_judgment_url_id")
 
-  @@map("access_judgement_url_logs")
+  @@map("access_judgment_url_logs")
 }

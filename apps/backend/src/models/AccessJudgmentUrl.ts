@@ -1,10 +1,10 @@
-import type { AccessJudgementUrl } from "@prisma/client";
+import type { AccessJudgmentUrl } from "@prisma/client";
 import { prismaClient } from "~/lib/prisma";
 
 export const insertAccessJudgmentUrls = async (
 	companyIdBaseUrlIdMapping: { companyId: string; baseUrlId: string }[],
 ): Promise<void> => {
-	await prismaClient.accessJudgementUrl.createMany({
+	await prismaClient.accessJudgmentUrl.createMany({
 		data: companyIdBaseUrlIdMapping.map(({ companyId, baseUrlId }) => ({
 			companyId,
 			baseUrlId,
@@ -13,10 +13,10 @@ export const insertAccessJudgmentUrls = async (
 	});
 };
 
-export const getAccessJudgementUrlsByCompanyIdsAndBaseUrlIds = async (
+export const getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds = async (
 	companyIdBaseUrlIdMapping: { companyId: string; baseUrlId: string }[],
-): Promise<AccessJudgementUrl[]> => {
-	return await prismaClient.accessJudgementUrl.findMany({
+): Promise<AccessJudgmentUrl[]> => {
+	return await prismaClient.accessJudgmentUrl.findMany({
 		where: {
 			OR: companyIdBaseUrlIdMapping.map(({ companyId, baseUrlId }) => ({
 				companyId,
@@ -26,10 +26,10 @@ export const getAccessJudgementUrlsByCompanyIdsAndBaseUrlIds = async (
 	});
 };
 
-export const getAccessJudgementUrlById = async (
-	accessJudgementUrlId: string,
-): Promise<AccessJudgementUrl | null> => {
-	return await prismaClient.accessJudgementUrl.findUnique({
-		where: { id: accessJudgementUrlId },
+export const getAccessJudgmentUrlById = async (
+	accessJudgmentUrlId: string,
+): Promise<AccessJudgmentUrl | null> => {
+	return await prismaClient.accessJudgmentUrl.findUnique({
+		where: { id: accessJudgmentUrlId },
 	});
 };

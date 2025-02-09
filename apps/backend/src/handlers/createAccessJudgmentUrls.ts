@@ -1,9 +1,10 @@
 import type { RouteHandler } from "@hono/zod-openapi";
+import type { Context } from "hono";
 import type { z } from "zod";
 import {
-	getAccessJudgementUrlsByCompanyIdsAndBaseUrlIds,
+	getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds,
 	insertAccessJudgmentUrls,
-} from "~/models/AccessJudgementUrl";
+} from "~/models/AccessJudgmentUrl";
 import { getBaseUrlsByUrls, insertBaseUrls } from "~/models/BaseUrl";
 import { getCompaniesByNames, insertCompanies } from "~/models/Company";
 import type { createAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
@@ -21,7 +22,7 @@ type CreateAccessJudgmentUrlsResponse = z.infer<
 
 export const createAccessJudgmentUrlsHandler: RouteHandler<
 	typeof createAccessJudgmentUrlsRoute
-> = async (c) => {
+> = async (c: Context) => {
 	const validationResult = await validateRequestBody(
 		c,
 		createAccessJudgmentUrlsRequestBodySchema,
@@ -89,13 +90,13 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 		return c.json(errorResponse, 500);
 	}
 
-	const accessJudgementUrls =
-		await getAccessJudgementUrlsByCompanyIdsAndBaseUrlIds(
+	const accessJudgmentUrls =
+		await getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds(
 			companyIdBaseUrlIdMapping,
 		);
 
 	const response: CreateAccessJudgmentUrlsResponse = {
-		accessJudgmentUrls: accessJudgementUrls.map((url) => ({
+		accessJudgmentUrls: accessJudgmentUrls.map((url) => ({
 			companyName: companies.find((c) => c.id === url.companyId)!.name,
 			baseUrl: baseUrls.find((b) => b.id === url.baseUrlId)!.url,
 			accessJudgmentUrl: getAccessJudgmentUrl(c, url.id),

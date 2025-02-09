@@ -8,7 +8,7 @@ import {
 import { errorResponseSchema } from "~/schema/error";
 
 export const getAccessJudgmentUrlsRoute = createRoute({
-	path: "/access-judgement-urls",
+	path: "/access-judgment-urls",
 	method: "get",
 	description: "アクセス判定URLの情報一覧を返却",
 	responses: {
@@ -24,7 +24,7 @@ export const getAccessJudgmentUrlsRoute = createRoute({
 });
 
 export const viewAccessJudgmentUrlsRoute = createRoute({
-	path: "/access-judgement-urls/{accessJudgmentUrlId}/view",
+	path: "/access-judgment-urls/{accessJudgmentUrlId}/view",
 	method: "get",
 	description:
 		"アクセス判定URLの状態をアクセス済みにし、ベースURLにリダイレクト",
@@ -35,7 +35,6 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 		302: {
 			description: "Found",
 			headers: {
-				// biome-ignore lint/style/useNamingConvention: http
 				Location: {
 					type: "string",
 					description: "リダイレクト先のURL",
@@ -62,7 +61,7 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 });
 
 export const createAccessJudgmentUrlsRoute = createRoute({
-	path: "/access-judgement-urls",
+	path: "/access-judgment-urls",
 	method: "post",
 	description: "アクセス判定URLを発行",
 	request: {
