@@ -13,6 +13,19 @@ export const insertAccessJudgmentUrls = async (
 	});
 };
 
+export const getAccessJudgmentUrls = async (
+	limit: number,
+	offset: number,
+	sort: string,
+	order: string,
+): Promise<AccessJudgmentUrl[]> => {
+	return await prismaClient.accessJudgmentUrl.findMany({
+		take: limit,
+		skip: offset,
+		orderBy: { [sort]: order },
+	});
+};
+
 export const getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds = async (
 	companyIdBaseUrlIdMapping: { companyId: string; baseUrlId: string }[],
 ): Promise<AccessJudgmentUrl[]> => {
