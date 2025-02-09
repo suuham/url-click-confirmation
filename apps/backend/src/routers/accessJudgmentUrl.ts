@@ -2,6 +2,7 @@ import { createRoute } from "@hono/zod-openapi";
 import {
 	createAccessJudgmentUrlsRequestBodySchema,
 	createAccessJudgmentUrlsResponseSchema,
+	getAccessJudgmentUrlsQuerySchema,
 	getAccessJudgmentUrlsResponseSchema,
 	viewAccessJudgmentUrlParamsSchema,
 } from "~/schema/accessJudgmentUrl";
@@ -11,12 +12,23 @@ export const getAccessJudgmentUrlsRoute = createRoute({
 	path: "/access-judgment-urls",
 	method: "get",
 	description: "アクセス判定URLの情報一覧を返却",
+	request: {
+		query: getAccessJudgmentUrlsQuerySchema,
+	},
 	responses: {
 		200: {
 			description: "OK",
 			content: {
 				"application/json": {
 					schema: getAccessJudgmentUrlsResponseSchema,
+				},
+			},
+		},
+		500: {
+			description: "Internal Server Error",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
 				},
 			},
 		},
@@ -35,6 +47,7 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 		302: {
 			description: "Found",
 			headers: {
+				// biome-ignore lint/style/useNamingConvention:
 				Location: {
 					type: "string",
 					description: "リダイレクト先のURL",
