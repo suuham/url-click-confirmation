@@ -56,3 +56,9 @@ pnpm run dev
 ```shell
 make connect-db
 ```
+
+### prisma studioの起動
+
+```shell
+npx prisma studio
+```
