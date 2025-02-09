@@ -8,6 +8,10 @@ export const insertCompanies = async (names: string[]): Promise<void> => {
 	});
 };
 
+export const getCompanyById = async (id: string): Promise<Company | null> => {
+	return await prismaClient.company.findUnique({ where: { id } });
+};
+
 export const getCompaniesByNames = async (
 	names: string[],
 ): Promise<Company[]> => {
