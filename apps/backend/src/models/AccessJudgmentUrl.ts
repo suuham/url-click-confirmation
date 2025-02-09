@@ -26,6 +26,44 @@ export const getAccessJudgmentUrls = async (
 	});
 };
 
+export const getAccessJudgmentUrlsByCompanyIds = async (
+	limit: number,
+	offset: number,
+	sort: string,
+	order: string,
+	companyIds: string[],
+): Promise<AccessJudgmentUrl[]> => {
+	return await prismaClient.accessJudgmentUrl.findMany({
+		take: limit,
+		skip: offset,
+		orderBy: { [sort]: order },
+		where: { companyId: { in: companyIds } },
+	});
+};
+
+export const getAccessJudgmentUrlsByBaseUrlIds = async (
+	limit: number,
+	offset: number,
+	sort: string,
+	order: string,
+	baseUrlIds: string[],
+): Promise<AccessJudgmentUrl[]> => {
+	return await prismaClient.accessJudgmentUrl.findMany({
+		take: limit,
+		skip: offset,
+		orderBy: { [sort]: order },
+		where: { baseUrlId: { in: baseUrlIds } },
+	});
+};
+
+export const getAccessJudgmentUrlById = async (
+	accessJudgmentUrlId: string,
+): Promise<AccessJudgmentUrl | null> => {
+	return await prismaClient.accessJudgmentUrl.findUnique({
+		where: { id: accessJudgmentUrlId },
+	});
+};
+
 export const getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds = async (
 	companyIdBaseUrlIdMapping: { companyId: string; baseUrlId: string }[],
 ): Promise<AccessJudgmentUrl[]> => {
@@ -36,13 +74,5 @@ export const getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds = async (
 				baseUrlId,
 			})),
 		},
-	});
-};
-
-export const getAccessJudgmentUrlById = async (
-	accessJudgmentUrlId: string,
-): Promise<AccessJudgmentUrl | null> => {
-	return await prismaClient.accessJudgmentUrl.findUnique({
-		where: { id: accessJudgmentUrlId },
 	});
 };
