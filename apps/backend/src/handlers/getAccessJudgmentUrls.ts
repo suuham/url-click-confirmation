@@ -1,10 +1,14 @@
 import type { RouteHandler } from "@hono/zod-openapi";
 import type { Context } from "hono";
 import type { z } from "zod";
-import { getAccessJudgmentUrls } from "~/models/AccessJudgmentUrl";
+import {
+	getAccessJudgmentUrls,
+	getAccessJudgmentUrlsByBaseUrlIds,
+	getAccessJudgmentUrlsByCompanyIds,
+} from "~/models/AccessJudgmentUrl";
 import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/AccessJudgmentUrlLog";
-import { getBaseUrlById } from "~/models/BaseUrl";
-import { getCompanyById } from "~/models/Company";
+import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/BaseUrl";
+import { getCompaniesByNameLike, getCompanyById } from "~/models/Company";
 import type { getAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	getAccessJudgmentUrlsQuerySchema,
@@ -19,15 +23,31 @@ type GetAccessJudgmentUrlsResponse = z.infer<
 export const getAccessJudgmentUrlsHandler: RouteHandler<
 	typeof getAccessJudgmentUrlsRoute
 > = async (c: Context) => {
-	const { companyName, baseUrl, baseUrlTitle, limit, offset, sort, order } =
+	const { companyName, baseUrlUrl, limit, offset, sort, order } =
 		getAccessJudgmentUrlsQuerySchema.parse(c.req.query());
 
-	const accessJudgmentUrls = await getAccessJudgmentUrls(
-		limit,
-		offset,
-		sort,
-		order,
-	);
+	const company = companyName
+		? await getCompaniesByNameLike(companyName)
+		: null;
+	const baseUrl = baseUrlUrl ? await getBaseUrlsByUrlLike(baseUrlUrl) : null;
+
+	const accessJudgmentUrls = company
+		? await getAccessJudgmentUrlsByCompanyIds(
+				limit,
+				offset,
+				sort,
+				order,
+				company.map((c) => c.id),
+			)
+		: baseUrl
+			? await getAccessJudgmentUrlsByBaseUrlIds(
+					limit,
+					offset,
+					sort,
+					order,
+					baseUrl.map((b) => b.id),
+				)
+			: await getAccessJudgmentUrls(limit, offset, sort, order);
 
 	const response: GetAccessJudgmentUrlsResponse = {
 		accessJudgmentUrls: await Promise.all(
