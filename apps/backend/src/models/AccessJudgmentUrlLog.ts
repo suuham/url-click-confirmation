@@ -8,3 +8,11 @@ export const insertAccessJudgmentUrlLog = async (
 		data: { accessJudgmentUrlId },
 	});
 };
+
+export const getAccessJudgmentUrlLogsByAccessJudgmentUrlId = async (
+	accessJudgmentUrlId: string,
+): Promise<AccessJudgmentUrlLog[]> => {
+	return await prismaClient.accessJudgmentUrlLog.findMany({
+		where: { accessJudgmentUrlId },
+	});
+};

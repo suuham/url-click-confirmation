@@ -41,8 +41,8 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 		(info) => info.baseUrl,
 	);
 	const baseUrlUrlInfo = requestData.accessJudgmentUrlInfo.map((info) => ({
-		title: info.companyName,
-		url: info.baseUrl,
+		title: info.baseUrl.title,
+		url: info.baseUrl.url,
 	}));
 
 	try {
@@ -61,12 +61,12 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 	}
 
 	const companies = await getCompaniesByNames(companyNames);
-	const baseUrls = await getBaseUrlsByUrls(baseUrlUrls);
+	const baseUrls = await getBaseUrlsByUrls(baseUrlUrls.map((url) => url.url));
 
 	const companyIdBaseUrlIdMapping = requestData.accessJudgmentUrlInfo.map(
 		(info) => {
 			const company = companies.find((c) => c.name === info.companyName)!;
-			const baseUrl = baseUrls.find((b) => b.url === info.baseUrl)!;
+			const baseUrl = baseUrls.find((b) => b.url === info.baseUrl.url)!;
 
 			return {
 				companyId: company.id,
@@ -98,7 +98,10 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 	const response: CreateAccessJudgmentUrlsResponse = {
 		accessJudgmentUrls: accessJudgmentUrls.map((url) => ({
 			companyName: companies.find((c) => c.id === url.companyId)!.name,
-			baseUrl: baseUrls.find((b) => b.id === url.baseUrlId)!.url,
+			baseUrl: {
+				title: baseUrls.find((b) => b.id === url.baseUrlId)!.title,
+				url: baseUrls.find((b) => b.id === url.baseUrlId)!.url,
+			},
 			accessJudgmentUrl: getAccessJudgmentUrl(c, url.id),
 		})),
 	};

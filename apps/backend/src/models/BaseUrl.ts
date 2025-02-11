@@ -10,6 +10,12 @@ export const insertBaseUrls = async (
 	});
 };
 
+export const getBaseUrlsByUrlLike = async (url: string): Promise<BaseUrl[]> => {
+	return await prismaClient.baseUrl.findMany({
+		where: { url: { contains: url } },
+	});
+};
+
 export const getBaseUrlsByUrls = async (urls: string[]): Promise<BaseUrl[]> => {
 	return await prismaClient.baseUrl.findMany({
 		where: { url: { in: urls } },

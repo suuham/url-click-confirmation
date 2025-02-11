@@ -11,7 +11,6 @@ export const viewAccessJudgmentUrlHandler: RouteHandler<
 	typeof viewAccessJudgmentUrlsRoute
 > = async (c: Context) => {
 	const accessJudgmentUrlId = c.req.param("accessJudgmentUrlId");
-	console.log(accessJudgmentUrlId);
 
 	const accessJudgmentUrl = await getAccessJudgmentUrlById(accessJudgmentUrlId);
 	if (!accessJudgmentUrl) {
