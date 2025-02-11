@@ -6,7 +6,7 @@ export const getAccessJudgmentUrlsQuerySchema = z.object({
 		description: "企業名",
 		example: "株式会社ホノ",
 	}),
-	baseUrlUrl: z.string().optional().openapi({
+	baseUrl: z.string().optional().openapi({
 		description: "アクセス判定URL発行のベースURL",
 		example: "https://super-hamster.com/",
 	}),
