@@ -16,14 +16,15 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "apps/backend/src/**/*.{ts,js,json}": [
+    "apps/frontend/src/**/*.{ts,tsx,json}": [
       "npx prettier --write",
       "npx @biomejs/biome check --write"
     ],
-    "apps/frontend/src/**/*.{ts,tsx,js,jsx,json}": [
+    "apps/backend/src/**/*.{ts,tsx,json}": [
       "npx prettier --write",
       "npx @biomejs/biome check --write"
-    ]
+    ],
+    "apps/frontend/src/**/*.scss": "npx stylelint --fix"
   },
   "engines": {
     "pnpm": ">=8.9.2",
