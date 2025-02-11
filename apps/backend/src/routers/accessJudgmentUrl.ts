@@ -2,15 +2,19 @@ import { createRoute } from "@hono/zod-openapi";
 import {
 	createAccessJudgmentUrlsRequestBodySchema,
 	createAccessJudgmentUrlsResponseSchema,
+	getAccessJudgmentUrlsQuerySchema,
 	getAccessJudgmentUrlsResponseSchema,
 	viewAccessJudgmentUrlParamsSchema,
 } from "~/schema/accessJudgmentUrl";
 import { errorResponseSchema } from "~/schema/error";
 
 export const getAccessJudgmentUrlsRoute = createRoute({
-	path: "/access-judgement-urls",
+	path: "/access-judgment-urls",
 	method: "get",
 	description: "アクセス判定URLの情報一覧を返却",
+	request: {
+		query: getAccessJudgmentUrlsQuerySchema,
+	},
 	responses: {
 		200: {
 			description: "OK",
@@ -20,11 +24,19 @@ export const getAccessJudgmentUrlsRoute = createRoute({
 				},
 			},
 		},
+		500: {
+			description: "Internal Server Error",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
+				},
+			},
+		},
 	},
 });
 
 export const viewAccessJudgmentUrlsRoute = createRoute({
-	path: "/access-judgement-urls/{accessJudgmentUrlId}/view",
+	path: "/access-judgment-urls/{accessJudgmentUrlId}/view",
 	method: "get",
 	description:
 		"アクセス判定URLの状態をアクセス済みにし、ベースURLにリダイレクト",
@@ -35,10 +47,26 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 		302: {
 			description: "Found",
 			headers: {
-				// biome-ignore lint/style/useNamingConvention: http
+				// biome-ignore lint/style/useNamingConvention:
 				Location: {
 					type: "string",
 					description: "リダイレクト先のURL",
+				},
+			},
+		},
+		404: {
+			description: "Not Found",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
+				},
+			},
+		},
+		500: {
+			description: "Internal Server Error",
+			content: {
+				"application/json": {
+					schema: errorResponseSchema,
 				},
 			},
 		},
@@ -46,7 +74,7 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 });
 
 export const createAccessJudgmentUrlsRoute = createRoute({
-	path: "/access-judgement-urls",
+	path: "/access-judgment-urls",
 	method: "post",
 	description: "アクセス判定URLを発行",
 	request: {
