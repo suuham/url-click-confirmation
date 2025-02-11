@@ -102,9 +102,15 @@ export const createAccessJudgmentUrlsRequestBodySchema = z.object({
 				description: "企業名",
 				example: "株式会社ホノ",
 			}),
-			baseUrl: z.string().openapi({
-				description: "アクセス判定URL発行のベースURLのID",
-				example: "https://super-hamster.com/",
+			baseUrl: z.object({
+				title: z.string().openapi({
+					description: "アクセス判定URL発行のベースURLのタイトル",
+					example: "スーパーハムスター紹介資料",
+				}),
+				url: z.string().openapi({
+					description: "アクセス判定URL発行のベースURL",
+					example: "https://super-hamster.com/",
+				}),
 			}),
 		}),
 	),
@@ -117,9 +123,15 @@ export const createAccessJudgmentUrlsResponseSchema = z.object({
 				description: "企業名",
 				example: "株式会社ホノ",
 			}),
-			baseUrl: z.string().openapi({
-				description: "アクセス判定URL発行のベースURL",
-				example: "https://super-hamster.com/",
+			baseUrl: z.object({
+				title: z.string().openapi({
+					description: "アクセス判定URL発行のベースURLのタイトル",
+					example: "スーパーハムスター紹介資料",
+				}),
+				url: z.string().openapi({
+					description: "アクセス判定URL発行のベースURL",
+					example: "https://super-hamster.com/",
+				}),
 			}),
 			accessJudgmentUrl: z.string().openapi({
 				description: "アクセス判定URL",
