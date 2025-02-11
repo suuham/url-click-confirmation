@@ -1,8 +1,8 @@
 import type { RouteHandler } from "@hono/zod-openapi";
 import type { Context } from "hono";
-import { getAccessJudgmentUrlById } from "~/models/AccessJudgmentUrl";
-import { insertAccessJudgmentUrlLog } from "~/models/AccessJudgmentUrlLog";
-import { getBaseUrlById } from "~/models/BaseUrl";
+import { getAccessJudgmentUrlById } from "~/models/accessJudgmentUrl";
+import { insertAccessJudgmentUrlLog } from "~/models/accessJudgmentUrlLog";
+import { getBaseUrlById } from "~/models/baseUrl";
 
 import type { viewAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 

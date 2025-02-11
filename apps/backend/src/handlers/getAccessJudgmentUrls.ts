@@ -5,10 +5,10 @@ import {
 	getAccessJudgmentUrls,
 	getAccessJudgmentUrlsByBaseUrlIds,
 	getAccessJudgmentUrlsByCompanyIds,
-} from "~/models/AccessJudgmentUrl";
-import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/AccessJudgmentUrlLog";
-import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/BaseUrl";
-import { getCompaniesByNameLike, getCompanyById } from "~/models/Company";
+} from "~/models/accessJudgmentUrl";
+import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/accessJudgmentUrlLog";
+import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/baseUrl";
+import { getCompaniesByNameLike, getCompanyById } from "~/models/company";
 import type { getAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	getAccessJudgmentUrlsQuerySchema,

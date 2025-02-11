@@ -4,9 +4,10 @@ import type { z } from "zod";
 import {
 	getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds,
 	insertAccessJudgmentUrls,
-} from "~/models/AccessJudgmentUrl";
-import { getBaseUrlsByUrls, insertBaseUrls } from "~/models/BaseUrl";
-import { getCompaniesByNames, insertCompanies } from "~/models/Company";
+} from "~/models/accessJudgmentUrl";
+import { getBaseUrlsByUrls, insertBaseUrls } from "~/models/baseUrl";
+import { getCompaniesByNames, insertCompanies } from "~/models/company";
+
 import type { createAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	createAccessJudgmentUrlsRequestBodySchema,
