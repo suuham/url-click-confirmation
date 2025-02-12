@@ -36,7 +36,7 @@ export function Header() {
 			<nav className={styles["nav-menu"]}>
 				<ul className={styles["nav-menu-list"]}>
 					{navItems.map(({ name, path }) => (
-						<li key={path} style={currentPageName === path ? liStyle : {}}>
+						<li key={path} style={currentPageName !== path ? liStyle : {}}>
 							<Link to={path} onClick={() => onClickLink(path)}>
 								{name}
 							</Link>
