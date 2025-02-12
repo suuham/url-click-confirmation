@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "format": "npx prettier --write ./src && npx @biomejs/biome check --write ./src && npx stylelint 'src/**/*.scss' --fix"
+    "format": "pnpm run format:prettier && pnpm run format:biome && pnpm run format:stylelint",
+    "format:prettier": "pnpm prettier --write ./src",
+    "format:biome": "pnpm biome format",
+    "format:stylelint": "pnpm stylelint --fix \"src/**/*.{scss}\""
   },
   "dependencies": {
     "jotai": "^2.12.0",
