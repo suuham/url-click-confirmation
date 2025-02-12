@@ -10,6 +10,7 @@
     "format": "npx prettier --write ./src && npx @biomejs/biome check --write ./src && npx stylelint 'src/**/*.scss' --fix"
   },
   "dependencies": {
+    "jotai": "^2.12.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.1.5"
@@ -20,6 +21,7 @@
     "@vitejs/plugin-react-swc": "^3.5.0",
     "globals": "^15.14.0",
     "sass": "^1.84.0",
+    "scss-reset": "^1.4.6",
     "stylelint": "^16.14.1",
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-recess-order": "^6.0.0",

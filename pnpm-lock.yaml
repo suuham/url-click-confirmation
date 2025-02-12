@@ -72,6 +72,9 @@ importers:
 
   apps/frontend:
     dependencies:
+      jotai:
+        specifier: ^2.12.0
+        version: 2.12.0(@types/react@19.0.8)(react@19.0.0)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -97,6 +100,9 @@ importers:
       sass:
         specifier: ^1.84.0
         version: 1.84.0
+      scss-reset:
+        specifier: ^1.4.6
+        version: 1.4.6
       stylelint:
         specifier: ^16.14.1
         version: 16.14.1(typescript@5.7.3)
@@ -1578,6 +1584,18 @@ packages:
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
+  jotai@2.12.0:
+    resolution: {integrity: sha512-j5B4NmUw8gbuN7AG4NufWw00rfpm6hexL2CVhKD7juoP2YyD9FEUV5ar921JMvadyrxQhU1NpuKUL3QfsAlVpA==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -1934,6 +1952,9 @@ packages:
 
   scheduler@0.25.0:
     resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
+
+  scss-reset@1.4.6:
+    resolution: {integrity: sha512-ioPmXUxVH0NFuNBPs88SolUkUuKYIIQ0CUGssx2yq8m4fuMxGLigjnpXa6JAC2j5w1p66JA33UDd+cKkFJp7yw==}
 
   semver@7.6.3:
     resolution: {integrity: sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==}
@@ -3511,6 +3532,11 @@ snapshots:
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
 
+  jotai@2.12.0(@types/react@19.0.8)(react@19.0.0):
+    optionalDependencies:
+      '@types/react': 19.0.8
+      react: 19.0.0
+
   joycon@3.1.1: {}
 
   js-tokens@4.0.0: {}
@@ -3821,6 +3847,8 @@ snapshots:
       '@parcel/watcher': 2.5.1
 
   scheduler@0.25.0: {}
+
+  scss-reset@1.4.6: {}
 
   semver@7.6.3: {}
 
