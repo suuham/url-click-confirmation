@@ -3,7 +3,7 @@ import { ROUTES } from "./constants";
 import { AccessJudgmentListPage } from "./pages/AccessJudgmentList";
 import { UploadFilePage } from "./pages/UploadFile";
 
-export default function Routes() {
+export function Routes() {
 	return (
 		<ReactRouterRoutes>
 			<Route element={<UploadFilePage />} path={ROUTES.HOME} />
