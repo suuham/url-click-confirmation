@@ -27,7 +27,8 @@
         "noReactSpecificProps": "off"
       },
       "complexity": {
-        "useLiteralKeys": "off"
+        "useLiteralKeys": "off",
+        "useSimplifiedLogicExpression": "off"
       },
       "style": {
         "noNonNullAssertion": "off",
