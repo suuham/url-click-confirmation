@@ -1,35 +1,36 @@
 {
-  "name": "@next-hono-monorepo/frontend",
-  "version": "0.1.0",
+  "name": "frontend",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint './**/*.{ts,tsx}'",
-    "lint:tsc": "tsc --noEmit",
-    "lint:eslint": "eslint src -c eslint.config.mjs",
-    "lint:prettier": "prettier --check src",
-    "lint:cspell": "cspell -c ../../cspell.json src/**/*",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
     "format": "npx prettier --write ./src && npx @biomejs/biome check --write ./src && npx stylelint 'src/**/*.scss' --fix"
   },
   "dependencies": {
-    "@next-hono-monorepo/common": "workspace:*",
-    "next": "15.1.4",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@next-hono-monorepo/eslint-config": "workspace:*",
-    "@next-hono-monorepo/ts-config": "workspace:*",
-    "@next/eslint-plugin-next": "^15.1.4",
-    "@types/node": "^20.12.7",
-    "@types/react": "19.0.7",
-    "@types/react-dom": "19.0.3",
-    "eslint-config-next": "^15.1.4",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "typescript": "5.7.3"
+    "@eslint/js": "^9.19.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
+    "sass": "^1.84.0",
+    "stylelint": "^16.14.1",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-recess-order": "^6.0.0",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.22.0",
+    "vite": "^6.1.0"
   }
 }
