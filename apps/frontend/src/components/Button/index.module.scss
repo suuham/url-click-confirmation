@@ -1,0 +1,18 @@
+.button {
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: $radius-md;
+
+  &:hover {
+    opacity: $opacity-hover;
+  }
+
+  &:active {
+    opacity: $opacity-active;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: $opacity-disabled;
+  }
+}
