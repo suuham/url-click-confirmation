@@ -1,0 +1,26 @@
+.upload-page-block {
+  display: flex;
+  height: 100%;
+  height: 60vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $gap-xl;
+
+  .upload-element-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $gap-sm;
+    width: 100%;
+  }
+
+  .download-element {
+    width: 80%;
+  }
+
+  .uploader-element {
+    width: 80%;
+  }
+}
