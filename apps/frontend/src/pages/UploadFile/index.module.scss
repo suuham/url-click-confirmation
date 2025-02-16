@@ -1,18 +1,18 @@
 .upload-page-block {
   display: flex;
-  height: 100%;
-  height: 60vh;
   flex-direction: column;
+  gap: $gap-xl;
   align-items: center;
   justify-content: center;
-  gap: $gap-xl;
+  height: 100%;
+  height: 80vh;
 
   .upload-element-block {
     display: flex;
     flex-direction: column;
+    gap: $gap-sm;
     align-items: center;
     justify-content: center;
-    gap: $gap-sm;
     width: 100%;
   }
 
