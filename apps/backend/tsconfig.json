@@ -1,5 +1,4 @@
 {
-  "extends": "@next-hono-monorepo/ts-config/base.json",
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "dist",
