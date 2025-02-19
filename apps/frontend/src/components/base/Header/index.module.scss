@@ -46,6 +46,10 @@
       font-weight: $font-weight-bold;
       color: $text-color-white;
 
+      .inactive {
+        opacity: 0.8;
+      }
+
       a {
         font-weight: bold;
         color: white;
