@@ -3,7 +3,10 @@ import { useDropzone } from "react-dropzone";
 import { useAtom, useSetAtom } from "jotai";
 import { downloadFileAtom, uploadedFileAtom } from "@/stores";
 
-import { convertCsvToJson, convertJsonToCsv } from "../functions/convertToJson";
+import {
+	convertCsvToJson,
+	convertJsonToCsv,
+} from "../functions/accessJudgmentCsv";
 import { readCsvFile } from "@/utils/readFile";
 import { isValidCsvFormat } from "../functions/isValidCsvFormat";
 import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
