@@ -30,7 +30,7 @@ export function Header() {
 					<img src={logoImage} alt="logo" />
 				</div>
 				<div className={styles["app-title-container"]}>
-					<h1>アクセス判定URL生成・閲覧アプリ</h1>
+					<h1>アクセス判定URL作成・閲覧アプリ</h1>
 				</div>
 			</div>
 			<nav className={styles["nav-menu"]}>
