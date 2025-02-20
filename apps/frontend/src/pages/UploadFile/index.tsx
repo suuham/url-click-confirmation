@@ -1,8 +1,8 @@
 import { DownloadSampleCsvButton } from "@/features/DownloadSampleCsv/components/DownloadSampleCsvButton";
-import { CreateButton } from "@/features/UploadFile/components/CreateButton";
-import { CsvFileUploader } from "@/features/UploadFile/components/CsvFileUploader";
 
 import styles from "./index.module.scss";
+import { UploadFile } from "@/features/UploadFile/components";
+
 export function UploadFilePage() {
 	return (
 		<div className={styles["upload-page-block"]}>
@@ -10,12 +10,9 @@ export function UploadFilePage() {
 				<div className={styles["download-element"]}>
 					<DownloadSampleCsvButton />
 				</div>
-				<div className={styles["uploader-element"]}>
-					<CsvFileUploader />
+				<div>
+					<UploadFile />
 				</div>
-			</div>
-			<div>
-				<CreateButton />
 			</div>
 		</div>
 	);
