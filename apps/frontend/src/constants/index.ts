@@ -7,3 +7,6 @@ export const ROUTES = {
 
 // biome-ignore lint/style/useNamingConvention:
 export type ROUTES = (typeof ROUTES)[keyof typeof ROUTES];
+
+// biome-ignore lint/style/useNamingConvention:
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
