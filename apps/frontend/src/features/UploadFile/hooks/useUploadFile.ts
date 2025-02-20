@@ -10,8 +10,10 @@ import {
 import { readCsvFile } from "@/utils/readFile";
 import { isValidCsvFormat } from "../functions/isValidCsvFormat";
 import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
+import { useNavigate } from "react-router";
 
 export function useUploadFile() {
+	const navigate = useNavigate();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
@@ -23,10 +25,8 @@ export function useUploadFile() {
 	};
 
 	const handleFileUpload = async () => {
-		console.log("こんにちは");
 		try {
 			setIsLoading(true);
-			console.log("こんにちは", uploadFile);
 
 			if (!uploadFile) {
 				setError("ファイルを選択してください");
@@ -39,25 +39,23 @@ export function useUploadFile() {
 				return;
 			}
 
-			console.log("こんにちは殺すぞ");
 			const request = convertCsvToJson(_uploadCsv);
 			const response = await postAccessJudgmentUrl(
 				request.createAccessJudgmentUrlsRequest,
 			);
 
-			console.log("こんにちは", response);
-			console.log("こんにちは", convertJsonToCsv(response));
-
 			setDownloadFile(
-				new Blob([convertJsonToCsv(response)], { type: "text/csv" }),
+				new File([convertJsonToCsv(response)], "download.csv", {
+					type: "text/csv",
+				}),
 			);
+
+			navigate("/complete");
 		} catch (err) {
 			setError("エラーが発生しました");
 		} finally {
 			setIsLoading(false);
 		}
-
-		setIsLoading(false);
 	};
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({
