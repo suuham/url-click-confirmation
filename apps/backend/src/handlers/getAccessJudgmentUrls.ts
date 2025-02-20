@@ -5,10 +5,10 @@ import {
 	getAccessJudgmentUrls,
 	getAccessJudgmentUrlsByBaseUrlIds,
 	getAccessJudgmentUrlsByCompanyIds,
-} from "~/models/AccessJudgmentUrl";
-import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/AccessJudgmentUrlLog";
-import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/BaseUrl";
-import { getCompaniesByNameLike, getCompanyById } from "~/models/Company";
+} from "~/models/accessJudgmentUrl";
+import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/accessJudgmentUrlLog";
+import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/baseUrl";
+import { getCompaniesByNameLike, getCompanyById } from "~/models/company";
 import type { getAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	getAccessJudgmentUrlsQuerySchema,
@@ -23,63 +23,68 @@ type GetAccessJudgmentUrlsResponse = z.infer<
 export const getAccessJudgmentUrlsHandler: RouteHandler<
 	typeof getAccessJudgmentUrlsRoute
 > = async (c: Context) => {
-	const { companyName, baseUrlUrl, limit, offset, sort, order } =
+	const { companyName, baseUrl, limit, offset, sort, order } =
 		getAccessJudgmentUrlsQuerySchema.parse(c.req.query());
 
-	const company = companyName
+	const companyRecords = companyName
 		? await getCompaniesByNameLike(companyName)
 		: null;
-	const baseUrl = baseUrlUrl ? await getBaseUrlsByUrlLike(baseUrlUrl) : null;
+	const baseUrlRecords = baseUrl ? await getBaseUrlsByUrlLike(baseUrl) : null;
 
-	const accessJudgmentUrls = company
+	const accessJudgmentUrlRecords = companyRecords
 		? await getAccessJudgmentUrlsByCompanyIds(
 				limit,
 				offset,
 				sort,
 				order,
-				company.map((c) => c.id),
+				companyRecords.map((c) => c.id),
 			)
-		: baseUrl
+		: baseUrlRecords
 			? await getAccessJudgmentUrlsByBaseUrlIds(
 					limit,
 					offset,
 					sort,
 					order,
-					baseUrl.map((b) => b.id),
+					baseUrlRecords.map((b) => b.id),
 				)
 			: await getAccessJudgmentUrls(limit, offset, sort, order);
 
 	const response: GetAccessJudgmentUrlsResponse = {
 		accessJudgmentUrls: await Promise.all(
-			accessJudgmentUrls.map(async (accessJudgmentUrl) => {
-				const accessJudgmentUrlLogs =
+			accessJudgmentUrlRecords.map(async (accessJudgmentUrlRecord) => {
+				const accessJudgmentUrlLogRecords =
 					await getAccessJudgmentUrlLogsByAccessJudgmentUrlId(
-						accessJudgmentUrl.id,
+						accessJudgmentUrlRecord.id,
 					);
-				const company = (await getCompanyById(accessJudgmentUrl.companyId))!;
-				const baseUrl = (await getBaseUrlById(accessJudgmentUrl.baseUrlId))!;
-				const lastViewedAt = accessJudgmentUrlLogs
+				const companyRecord = (await getCompanyById(
+					accessJudgmentUrlRecord.companyId,
+				))!;
+				const baseUrlRecord = (await getBaseUrlById(
+					accessJudgmentUrlRecord.baseUrlId,
+				))!;
+
+				const lastViewedAt = accessJudgmentUrlLogRecords
 					.map((log) => log.createdAt.getTime())
 					.reduce((a, b) => Math.max(a, b), 0);
-				const viewedAts = accessJudgmentUrlLogs
+				const viewedAts = accessJudgmentUrlLogRecords
 					.map((log) => log.createdAt.getTime())
 					.sort((a, b) => b - a)
 					.slice(1);
 
 				return {
 					company: {
-						id: company.id,
-						name: company.name,
+						id: companyRecord.id,
+						name: companyRecord.name,
 					},
 					baseUrl: {
-						id: baseUrl.id,
-						title: baseUrl.title,
-						url: baseUrl.url,
+						id: baseUrlRecord.id,
+						title: baseUrlRecord.title,
+						url: baseUrlRecord.url,
 					},
 					accessJudgmentUrl: {
-						id: accessJudgmentUrl.id,
-						url: getAccessJudgmentUrl(c, accessJudgmentUrl.id),
-						viewCount: accessJudgmentUrlLogs.length,
+						id: accessJudgmentUrlRecord.id,
+						url: getAccessJudgmentUrl(c, accessJudgmentUrlRecord.id),
+						viewCount: accessJudgmentUrlLogRecords.length,
 						lastViewedAt: lastViewedAt,
 						viewedAts: viewedAts,
 					},

@@ -4,9 +4,10 @@ import type { z } from "zod";
 import {
 	getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds,
 	insertAccessJudgmentUrls,
-} from "~/models/AccessJudgmentUrl";
-import { getBaseUrlsByUrls, insertBaseUrls } from "~/models/BaseUrl";
-import { getCompaniesByNames, insertCompanies } from "~/models/Company";
+} from "~/models/accessJudgmentUrl";
+import { getBaseUrlsByUrls, insertBaseUrls } from "~/models/baseUrl";
+import { getCompaniesByNames, insertCompanies } from "~/models/company";
+
 import type { createAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	createAccessJudgmentUrlsRequestBodySchema,
@@ -37,7 +38,7 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 	const companyNames = requestData.accessJudgmentUrlInfo.map(
 		(info) => info.companyName,
 	);
-	const baseUrlUrls = requestData.accessJudgmentUrlInfo.map(
+	const baseUrls = requestData.accessJudgmentUrlInfo.map(
 		(info) => info.baseUrl,
 	);
 	const baseUrlUrlInfo = requestData.accessJudgmentUrlInfo.map((info) => ({
@@ -60,17 +61,16 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 		return c.json(errorResponse, 500);
 	}
 
-	const companies = await getCompaniesByNames(companyNames);
-	const baseUrls = await getBaseUrlsByUrls(baseUrlUrls.map((url) => url.url));
+	const companyRecords = await getCompaniesByNames(companyNames);
+	const baseUrlRecords = await getBaseUrlsByUrls(
+		baseUrls.map((baseUrl) => baseUrl.url),
+	);
 
 	const companyIdBaseUrlIdMapping = requestData.accessJudgmentUrlInfo.map(
 		(info) => {
-			const company = companies.find((c) => c.name === info.companyName)!;
-			const baseUrl = baseUrls.find((b) => b.url === info.baseUrl.url)!;
-
 			return {
-				companyId: company.id,
-				baseUrlId: baseUrl.id,
+				companyId: companyRecords.find((c) => c.name === info.companyName)!.id,
+				baseUrlId: baseUrlRecords.find((b) => b.url === info.baseUrl.url)!.id,
 			};
 		},
 	);
@@ -96,14 +96,22 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 		);
 
 	const response: CreateAccessJudgmentUrlsResponse = {
-		accessJudgmentUrls: accessJudgmentUrls.map((url) => ({
-			companyName: companies.find((c) => c.id === url.companyId)!.name,
-			baseUrl: {
-				title: baseUrls.find((b) => b.id === url.baseUrlId)!.title,
-				url: baseUrls.find((b) => b.id === url.baseUrlId)!.url,
-			},
-			accessJudgmentUrl: getAccessJudgmentUrl(c, url.id),
-		})),
+		accessJudgmentUrls: accessJudgmentUrls.map((url) => {
+			const company = companyRecords.find((c) => c.id === url.companyId);
+			const baseUrl = baseUrlRecords.find((b) => b.id === url.baseUrlId);
+			if (!company || !baseUrl) {
+				throw new Error("Failed to find company or base URL");
+			}
+
+			return {
+				companyName: company.name,
+				baseUrl: {
+					title: baseUrl.title,
+					url: baseUrl.url,
+				},
+				accessJudgmentUrl: getAccessJudgmentUrl(c, url.id),
+			};
+		}),
 	};
 
 	return c.json(response, 201);
