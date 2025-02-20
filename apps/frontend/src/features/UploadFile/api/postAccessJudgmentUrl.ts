@@ -9,7 +9,6 @@ import {
 export const postAccessJudgmentUrl = async (
 	request: CreateAccessJudgmentUrlsRequest,
 ): Promise<CreateAccessJudgmentUrlsResponse> => {
-	console.log("こんにちは", request);
 	try {
 		const response = await fetch(`${BACKEND_URL}/access-judgment-urls`, {
 			method: "POST",
