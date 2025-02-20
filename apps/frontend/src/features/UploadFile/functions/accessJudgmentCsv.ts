@@ -27,8 +27,8 @@ export function convertJsonToCsv(
 	json: CreateAccessJudgmentUrlsResponse,
 ): string {
 	const lines = json.accessJudgmentUrls.map((accessJudgmentUrl) => {
-		return `${accessJudgmentUrl.companyName},${accessJudgmentUrl.baseUrl.url}`;
+		return `${accessJudgmentUrl.companyName},${accessJudgmentUrl.baseUrl.url},${accessJudgmentUrl.accessJudgmentUrl}`;
 	});
 
-	return ["company_name,base_url", ...lines].join("\n");
+	return ["company_name,base_url,access_judgment_url", ...lines].join("\n");
 }
