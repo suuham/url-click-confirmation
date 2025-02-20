@@ -1,6 +1,6 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router";
 import { ROUTES } from "./constants";
-import { AccessJudgmentListPage } from "./pages/AccessJudgmentList";
+import { AccessJudgmentUrlDetailsList } from "./pages/AccessJudgmentUrlDetailsList";
 import { UploadFilePage } from "./pages/UploadFile";
 import { DownloadAccessJudgmentUrlFilePage } from "./pages/DownloadAccessJudgmentUrlFile";
 
@@ -16,7 +16,7 @@ export function Routes() {
 				path={ROUTES.ACCESS_JUDGMENT_LIST_FILE_COMPLETE_PAGE}
 			/>
 			<Route
-				element={<AccessJudgmentListPage />}
+				element={<AccessJudgmentUrlDetailsList />}
 				path={ROUTES.ACCESS_JUDGMENT_LIST}
 			/>
 		</ReactRouterRoutes>
