@@ -11,16 +11,12 @@ export function Header() {
 	const [currentPageName, setCurrentPageName] = useAtom(currentPageNameAtom);
 
 	const navItems = [
-		{ name: "URL作成", path: ROUTES.HOME },
+		{ name: "URL作成", path: ROUTES.ACCESS_JUDGMENT_LIST_FILE_UPLOAD_PAGE },
 		{ name: "URL閲覧", path: ROUTES.ACCESS_JUDGMENT_LIST },
 	];
 
 	const liStyle: CSSProperties = {
 		opacity: 0.8,
-	};
-
-	const onClickLink = (path: ROUTES) => {
-		setCurrentPageName(path);
 	};
 
 	return (
@@ -37,7 +33,7 @@ export function Header() {
 				<ul className={styles["nav-menu-list"]}>
 					{navItems.map(({ name, path }) => (
 						<li key={path} style={currentPageName === path ? liStyle : {}}>
-							<Link to={path} onClick={() => onClickLink(path)}>
+							<Link to={path} onClick={() => setCurrentPageName(path)}>
 								{name}
 							</Link>
 						</li>
