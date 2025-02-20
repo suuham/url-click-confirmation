@@ -21,6 +21,8 @@ export const postAccessJudgmentUrl = async (
 
 		if (response.status === 400) {
 			throw new PostSalesFileError("BadRequest", "不正なURLです");
+		} else if (response.status === 500) {
+			throw new PostSalesFileError("InternalServerError", "サーバーエラーです");
 		}
 
 		return await response.json();
