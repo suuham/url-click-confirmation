@@ -1,0 +1,11 @@
+.upload-file-block {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-lg;
+  align-items: center;
+  width: 100%;
+
+  .upload-element {
+    width: 100%;
+  }
+}
