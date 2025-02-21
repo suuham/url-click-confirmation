@@ -85,6 +85,7 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 						id: accessJudgmentUrlRecord.id,
 						url: getAccessJudgmentUrl(c, accessJudgmentUrlRecord.id),
 						viewCount: accessJudgmentUrlLogRecords.length,
+						createdAt: accessJudgmentUrlRecord.createdAt.getTime(),
 						lastViewedAt: lastViewedAt,
 						viewedAts: viewedAts,
 					},
