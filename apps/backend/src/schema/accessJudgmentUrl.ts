@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { stringToIntWithDefault } from "~/utils/stringToIntWithDefault";
 import { unixTimestampSchema } from "./time";
 
 export const getAccessJudgmentUrlsQuerySchema = z.object({
@@ -14,22 +15,14 @@ export const getAccessJudgmentUrlsQuerySchema = z.object({
 		description: "アクセス判定URL発行のベースURLのタイトル",
 		example: "スーパーハムスター",
 	}),
-	limit: z
-		.string()
-		.optional()
-		.transform((val) => (val ? Number.parseInt(val, 10) : 50))
-		.openapi({
-			description: "取得するアクセス判定URLの最大数",
-			example: "50",
-		}),
-	offset: z
-		.string()
-		.optional()
-		.transform((val) => (val ? Number.parseInt(val, 10) : 0))
-		.openapi({
-			description: "取得するアクセス判定URLのオフセット",
-			example: "0",
-		}),
+	limit: z.string().optional().transform(stringToIntWithDefault(50)).openapi({
+		description: "取得するアクセス判定URLの最大数",
+		example: "50",
+	}),
+	offset: z.string().optional().transform(stringToIntWithDefault(0)).openapi({
+		description: "取得するアクセス判定URLのオフセット",
+		example: "0",
+	}),
 	sort: z.string().default("createdAt").openapi({
 		description: "アクセス判定URLのソート順",
 		example: "createdAt",
