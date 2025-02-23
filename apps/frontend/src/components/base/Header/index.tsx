@@ -4,8 +4,8 @@ import { Link } from "react-router";
 import { currentPageNameAtom } from "@/stores";
 import { useAtom } from "jotai";
 
+import { NAV_ITEMS } from "./constants";
 import styles from "./index.module.scss";
-import { NAV_ITEMS } from "./const";
 
 export function Header() {
 	const [currentPageName, setCurrentPageName] = useAtom(currentPageNameAtom);
@@ -20,17 +20,12 @@ export function Header() {
 					<h1>アクセス判定URL作成・閲覧アプリ</h1>
 				</div>
 			</div>
-			<nav
-				className={styles["nav-menu"]}
-				role="navigation"
-				aria-label="メインナビゲーション"
-			>
+			<nav className={styles["nav-menu"]} aria-label="メインナビゲーション">
 				<ul className={styles["nav-menu-list"]} role="menubar">
 					{NAV_ITEMS.map(({ name, path }) => (
 						<li
 							key={path}
 							className={currentPageName !== path ? styles["inactive"] : ""}
-							role="menuitem"
 						>
 							<Link to={path} onClick={() => setCurrentPageName(path)}>
 								{name}
