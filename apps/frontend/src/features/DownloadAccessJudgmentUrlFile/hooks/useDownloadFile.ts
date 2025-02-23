@@ -19,7 +19,7 @@ export function useDownloadFile() {
 		const urlBlob = window.URL.createObjectURL(downloadFile);
 		const link = document.createElement("a");
 		link.href = urlBlob;
-		link.download = "scraping_file";
+		link.download = "scraping_file.csv";
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
