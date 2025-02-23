@@ -1,7 +1,6 @@
 import logoImage from "@/assets/logo.png";
 import { Link } from "react-router";
 
-import { ROUTES } from "@/constants";
 import { currentPageNameAtom } from "@/stores";
 import { useAtom } from "jotai";
 
@@ -11,10 +10,6 @@ import { NAV_ITEMS } from "./const";
 export function Header() {
 	const [currentPageName, setCurrentPageName] = useAtom(currentPageNameAtom);
 
-	const onClickLink = (path: ROUTES) => {
-		setCurrentPageName(path);
-	};
-
 	return (
 		<header className={styles.header}>
 			<div className={styles["title-logo-container"]}>
@@ -22,7 +17,7 @@ export function Header() {
 					<img src={logoImage} alt="logo" />
 				</div>
 				<div className={styles["app-title-container"]}>
-					<h1>アクセス判定URL生成・閲覧アプリ</h1>
+					<h1>アクセス判定URL作成・閲覧アプリ</h1>
 				</div>
 			</div>
 			<nav
@@ -37,7 +32,7 @@ export function Header() {
 							className={currentPageName !== path ? styles["inactive"] : ""}
 							role="menuitem"
 						>
-							<Link to={path} onClick={() => onClickLink(path)}>
+							<Link to={path} onClick={() => setCurrentPageName(path)}>
 								{name}
 							</Link>
 						</li>

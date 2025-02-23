@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-xl;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: $lg;
+  background-color: $background-color;
+  border-radius: $radius-xl;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+
+  .title {
+    h2 {
+      font-size: $font-size-title;
+      font-weight: $font-weight-bold;
+      color: $text-color;
+      text-align: center;
+    }
+  }
+
+  .link-block {
+    a {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $button-color-orange;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.2s ease-in-out;
+    }
+  }
+}

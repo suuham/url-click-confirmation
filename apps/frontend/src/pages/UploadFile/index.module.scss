@@ -1,0 +1,15 @@
+.upload-page-block {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-xl;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+
+  .upload-element-block {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-sm;
+    width: 80%;
+  }
+}

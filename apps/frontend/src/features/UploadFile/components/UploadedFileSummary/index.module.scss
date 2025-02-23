@@ -1,0 +1,16 @@
+.file-summary-block {
+  display: flex;
+  gap: $gap-lg;
+  height: 100%;
+  padding: $sm $md;
+  background-color: $background-color;
+  background-color: $uploader-block-background-color;
+  border: $border-size-sm solid $uploader-block-border-color;
+  border-radius: $radius-md;
+
+  h2 {
+    font-size: $font-size-title;
+    font-weight: $font-weight-bold;
+    color: $text-color-gray;
+  }
+}

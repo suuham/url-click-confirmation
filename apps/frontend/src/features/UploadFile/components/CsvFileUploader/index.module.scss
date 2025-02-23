@@ -1,0 +1,39 @@
+.uploader-block {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-xl;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: $xl;
+  background-color: $uploader-block-background-color;
+  border: $border-size-md dashed $uploader-block-border-color;
+  border-radius: $radius-md;
+
+  h2 {
+    font-size: $font-size-title;
+    font-weight: $font-weight-bold;
+    color: $text-color-gray;
+  }
+
+  .button-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    height: 100%;
+
+    .drop-text {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: $text-color;
+    }
+
+    .error-text {
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+      color: $error-text-color;
+    }
+  }
+}
