@@ -38,6 +38,12 @@ export function useUploadFile() {
 				setError("CSVファイルの形式が正しくありません");
 				return;
 			}
+			if (!_uploadCsv.startsWith("company_name,base_url")) {
+				setError(
+					"ファイルの形式が正しくないか、文字化けが発生している可能性があります。UTF-8形式のCSVファイルを使用してください。",
+				);
+				return;
+			}
 
 			const request = convertCsvToJson(_uploadCsv);
 			const response = await postAccessJudgmentUrl(
