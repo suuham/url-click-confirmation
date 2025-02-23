@@ -1,9 +1,9 @@
-export function generateCSV() {
+export function generateSampleCsv() {
 	const header = ["company_name", "base_url"];
 	const rows = [
-		["Google", "https://super-hamster.com/"],
-		["Facebook", "https://super-hamster.com/"],
-		["Twitter", "https://super-hamster.com/"],
+		["Google", "https://super-hamster.com/#about"],
+		["Facebook", "https://super-hamster.com/#service"],
+		["Twitter", "https://super-hamster.com/#member"],
 	];
 
 	const csvContent = [

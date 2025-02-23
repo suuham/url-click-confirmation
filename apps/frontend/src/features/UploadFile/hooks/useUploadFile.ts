@@ -20,7 +20,7 @@ export function useUploadFile() {
 	const [uploadFile, setUploadFile] = useAtom(uploadedFileAtom);
 	const setDownloadFile = useSetAtom(downloadFileAtom);
 
-	const handleButtonClick = async () => {
+	const handleButtonClick = () => {
 		fileInputRef.current?.click();
 	};
 
@@ -36,6 +36,12 @@ export function useUploadFile() {
 			const _uploadCsv = await readCsvFile(uploadFile);
 			if (!isValidCsvFormat(_uploadCsv)) {
 				setError("CSVファイルの形式が正しくありません");
+				return;
+			}
+			if (!_uploadCsv.startsWith("company_name,base_url")) {
+				setError(
+					"ファイルの形式が正しくないか、文字化けが発生している可能性があります。UTF-8形式のCSVファイルを使用してください。",
+				);
 				return;
 			}
 
