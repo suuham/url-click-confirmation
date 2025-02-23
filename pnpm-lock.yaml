@@ -60,6 +60,9 @@ importers:
         specifier: ^3.24.1
         version: 3.24.1
     devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
       '@next-hono-monorepo/ts-config':
         specifier: workspace:*
         version: link:../../packages/ts-config
