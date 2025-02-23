@@ -2,7 +2,7 @@ import colorStyles from "@/styles/colors.module.scss";
 
 import type { Size } from "@/types/size";
 import type { CSSProperties } from "react";
-import { BUTTON_FONT_SIZE_MAP, BUTTON_SIZE_MAP } from "./const";
+import { BUTTON_FONT_SIZE_MAP, BUTTON_SIZE_MAP } from "./constants";
 import styles from "./index.module.scss";
 
 type Props = {
