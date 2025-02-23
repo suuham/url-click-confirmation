@@ -1,10 +1,10 @@
 import { BACKEND_URL } from "@/constants";
 
-import { PostSalesFileError } from "./errors";
-import {
+import type {
 	CreateAccessJudgmentUrlsRequest,
 	CreateAccessJudgmentUrlsResponse,
 } from "@/types/scheme";
+import { PostSalesFileError } from "./errors";
 
 export const postAccessJudgmentUrl = async (
 	request: CreateAccessJudgmentUrlsRequest,
@@ -20,7 +20,8 @@ export const postAccessJudgmentUrl = async (
 
 		if (response.status === 400) {
 			throw new PostSalesFileError("BadRequest", "不正なURLです");
-		} else if (response.status === 500) {
+		}
+		if (response.status === 500) {
 			throw new PostSalesFileError("InternalServerError", "サーバーエラーです");
 		}
 

@@ -1,11 +1,12 @@
 import { Button } from "@/components/Button";
+import { uploadedFileAtom } from "@/stores";
+import { useAtomValue } from "jotai";
+import type { RefObject } from "react";
 import { UploadedFileSummary } from "../UploadedFileSummary";
 import styles from "./index.module.scss";
-import { useAtomValue } from "jotai";
-import { uploadedFileAtom } from "@/stores";
 
 type Props = {
-	fileInputRef: React.RefObject<HTMLInputElement | null>;
+	fileInputRef: RefObject<HTMLInputElement | null>;
 	error: string | null;
 	isDragActive: boolean;
 	handleButtonClick: () => void;
@@ -41,7 +42,7 @@ export function CsvFileUploader({
 						<Button
 							text="ファイルを選択"
 							size="lg"
-							isOutline
+							isOutline={true}
 							onClick={handleButtonClick}
 						/>
 					</>

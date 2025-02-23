@@ -1,16 +1,16 @@
+import { downloadFileAtom, uploadedFileAtom } from "@/stores";
+import { useAtom, useSetAtom } from "jotai";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useAtom, useSetAtom } from "jotai";
-import { downloadFileAtom, uploadedFileAtom } from "@/stores";
 
+import { readCsvFile } from "@/utils/readFile";
+import { useNavigate } from "react-router";
+import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
 import {
 	convertCsvToJson,
 	convertJsonToCsv,
 } from "../functions/accessJudgmentCsv";
-import { readCsvFile } from "@/utils/readFile";
 import { isValidCsvFormat } from "../functions/isValidCsvFormat";
-import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
-import { useNavigate } from "react-router";
 
 export function useUploadFile() {
 	const navigate = useNavigate();
@@ -20,7 +20,7 @@ export function useUploadFile() {
 	const [uploadFile, setUploadFile] = useAtom(uploadedFileAtom);
 	const setDownloadFile = useSetAtom(downloadFileAtom);
 
-	const handleButtonClick = async () => {
+	const handleButtonClick = () => {
 		fileInputRef.current?.click();
 	};
 
@@ -51,7 +51,7 @@ export function useUploadFile() {
 			);
 
 			navigate("/complete");
-		} catch (err) {
+		} catch (_err) {
 			setError("エラーが発生しました");
 		} finally {
 			setIsLoading(false);
@@ -60,7 +60,7 @@ export function useUploadFile() {
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({
 		accept: { "text/csv": [".csv"] },
-		onDrop: async (acceptedFiles, fileRejections) => {
+		onDrop: (acceptedFiles, fileRejections) => {
 			if (fileRejections.length > 0) {
 				setError("CSVファイルのみアップロードできます");
 				return;

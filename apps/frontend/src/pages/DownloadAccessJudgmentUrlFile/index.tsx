@@ -1,6 +1,6 @@
+import { DownloadAccessJudgmentUrlFileBoard } from "@/features/DownloadAccessJudgmentUrlFile/components";
 import { ComponentLayout } from "@/layouts/ComponentLayout";
 import styles from "./index.module.scss";
-import { DownloadAccessJudgmentUrlFileBoard } from "@/features/DownloadAccessJudgmentUrlFile/components";
 
 export function DownloadAccessJudgmentUrlFilePage() {
 	return (

@@ -1,4 +1,4 @@
-import {
+import type {
 	CreateAccessJudgmentUrlsRequest,
 	CreateAccessJudgmentUrlsResponse,
 } from "@/types/scheme";

@@ -1,7 +1,7 @@
 import { DownloadSampleCsvButton } from "@/features/DownloadSampleCsv/components/DownloadSampleCsvButton";
 
-import styles from "./index.module.scss";
 import { UploadFile } from "@/features/UploadFile/components";
+import styles from "./index.module.scss";
 
 export function UploadFilePage() {
 	return (
