@@ -1,4 +1,4 @@
-export function generateCSV() {
+export function generateCsv() {
 	const header = ["company_name", "base_url"];
 	const rows = [
 		["Google", "https://super-hamster.com/"],
