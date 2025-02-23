@@ -12,7 +12,7 @@
 VITE_BACKEND_URL=http://localhost:4000
 ```
 
-#### スクレイピングサーバの起動
+#### サーバの起動
 
 [こちらのドキュメント](https://github.com/suuham/url-click-confirmation/blob/dev/apps/backend/README.md)を参考にしてください
 
