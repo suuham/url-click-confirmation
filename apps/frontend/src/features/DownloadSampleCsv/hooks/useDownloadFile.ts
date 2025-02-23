@@ -1,8 +1,8 @@
-import { generateCsv } from "../functions/generateSampleCsv";
+import { generateSampleCsv } from "../functions/generateSampleCsv";
 
 export function useDownloadFile() {
 	const handleDownloadSampleCsv = () => {
-		generateCsv();
+		generateSampleCsv();
 	};
 
 	return {
