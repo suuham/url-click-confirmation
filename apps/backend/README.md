@@ -36,7 +36,7 @@ make up
 ```
 
 ```shell
-npx prisma migrate dev --name init
+pnpm prisma migrate dev --name init
 ```
 
 ### 3. サーバの起動
