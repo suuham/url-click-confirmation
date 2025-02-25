@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 
 import { readCsvFile } from "@/utils/readFile";
 import { useNavigate } from "react-router";
+import { PostSalesFileError } from "../api/errors";
 import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
 import {
 	convertCsvToJson,
@@ -32,6 +33,10 @@ export function useUploadFile() {
 				setError("ファイルを選択してください");
 				return;
 			}
+			if (uploadFile.size > 20 * 1024 * 1024) {
+				setError("ファイルサイズが20MBを超えています");
+				return;
+			}
 
 			const _uploadCsv = await readCsvFile(uploadFile);
 			if (!isValidCsvFormat(_uploadCsv)) {
@@ -57,8 +62,34 @@ export function useUploadFile() {
 			);
 
 			navigate("/complete");
-		} catch (_err) {
-			setError("エラーが発生しました");
+		} catch (err) {
+			if (err instanceof PostSalesFileError) {
+				switch (err.type) {
+					case "BadRequest":
+						setError(
+							"CSVのフォーマットが不正です。サンプルCSVを確認してください",
+						);
+						break;
+					case "InternalServerError":
+						setError(
+							"サーバーでエラーが発生しました。時間をおいて再度お試しください",
+						);
+						break;
+					case "FetchApiError":
+						setError(
+							"通信エラーが発生しました。インターネット接続を確認してください",
+						);
+						break;
+					default:
+						setError(
+							"予期せぬエラーが発生しました。時間をおいて再度お試しください",
+						);
+				}
+			} else {
+				setError(
+					"予期せぬエラーが発生しました。時間をおいて再度お試しください",
+				);
+			}
 		} finally {
 			setIsLoading(false);
 		}
