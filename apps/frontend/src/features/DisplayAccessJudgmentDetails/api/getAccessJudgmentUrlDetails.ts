@@ -12,8 +12,17 @@ export const getAccessJudgmentUrlDetails = async (
 	order = "desc",
 ): Promise<GetAccessJudgmentUrlsResponse> => {
 	try {
+		const params = new URLSearchParams({
+			companyName,
+			baseUrlUrl,
+			baseUrlTitle,
+			limit: limit.toString(),
+			offset: offset.toString(),
+			sort,
+			order,
+		});
 		const response = await fetch(
-			`${BACKEND_URL}/access-judgment-urls?companyName=${companyName}&baseUrlUrl=${baseUrlUrl}&baseUrlTitle=${baseUrlTitle}&limit=${limit}&offset=${offset}&sort=${sort}&order=${order}`,
+			`${BACKEND_URL}/access-judgment-urls?${params}`,
 			{
 				method: "GET",
 				headers: {
