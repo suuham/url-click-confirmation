@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { stringToIntWithDefault } from "~/utils/stringToIntWithDefault";
+import { stringToBoolean, stringToIntWithDefault } from "~/utils/queryParse";
 import { unixTimestampSchema } from "./time";
 
 export const getAccessJudgmentUrlsQuerySchema = z.object({
@@ -97,6 +97,13 @@ export const viewAccessJudgmentUrlParamsSchema = z.object({
 	accessJudgmentUrlId: z.string().openapi({
 		description: "アクセス判定URLのID",
 		example: "wai6xa8eycca8s3ys0dinit6",
+	}),
+});
+
+export const viewAccessJudgmentUrlQuerySchema = z.object({
+	isDemo: z.string().transform(stringToBoolean()).openapi({
+		description: "デモモードかどうか",
+		example: "true",
 	}),
 });
 
