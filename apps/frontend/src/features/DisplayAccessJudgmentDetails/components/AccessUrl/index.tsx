@@ -1,6 +1,6 @@
 import { Toast } from "@/components/Toast";
-import { useState } from "react";
 import LinkCopyIcon from "../../assets/link.svg";
+import { useUrl } from "../../hooks/useUrl";
 import styles from "./index.module.scss";
 
 type Props = {
@@ -8,23 +8,15 @@ type Props = {
 };
 
 export function AccessUrl({ url }: Props) {
-	const [_copied, setCopied] = useState(false);
-	const [showToast, setShowToast] = useState(false);
+	const { showToast, setShowToast, copyToClipboard } = useUrl();
 	const truncatedUrl = url.length > 20 ? `${url.slice(0, 20)}...` : url;
-
-	const copyToClipboard = async () => {
-		await navigator.clipboard.writeText(url);
-		setCopied(true);
-		setShowToast(true);
-		setTimeout(() => setCopied(false), 2000);
-	};
 
 	return (
 		<div className={styles["access-url"]} title={url}>
 			<div>
 				<button
 					type="button"
-					onClick={copyToClipboard}
+					onClick={() => copyToClipboard(url)}
 					className={styles["copy-button"]}
 				>
 					<img src={LinkCopyIcon} alt="Copy URL" />
