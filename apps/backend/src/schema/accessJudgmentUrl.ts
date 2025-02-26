@@ -101,7 +101,7 @@ export const viewAccessJudgmentUrlParamsSchema = z.object({
 });
 
 export const viewAccessJudgmentUrlQuerySchema = z.object({
-	isDemo: z.string().transform(stringToBoolean()).openapi({
+	isDemo: z.string().optional().transform(stringToBoolean()).openapi({
 		description: "デモモードかどうか",
 		example: "true",
 	}),
