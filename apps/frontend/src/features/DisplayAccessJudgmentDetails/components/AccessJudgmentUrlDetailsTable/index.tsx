@@ -37,7 +37,7 @@ export function AccessJudgmentUrlDetailsTable({
 										</td>
 										<td>
 											<AccessUrl
-												url={accessJudgmentUrl.accessJudgmentUrl.url}
+												url={`${accessJudgmentUrl.accessJudgmentUrl.url}?isDemo=true`}
 											/>
 										</td>
 										<td>
