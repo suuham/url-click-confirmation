@@ -5,7 +5,7 @@ import { useDropzone } from "react-dropzone";
 
 import { readCsvFile } from "@/utils/readFile";
 import { useNavigate } from "react-router";
-import { PostSalesFileError } from "../api/errors";
+import { CreateAccessJudgmentUrlError } from "../api/errors";
 import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
 import {
 	convertCsvToJson,
@@ -29,30 +29,19 @@ export function useUploadFile() {
 		try {
 			setIsLoading(true);
 
-			if (!uploadFile) {
-				setError("ファイルを選択してください");
-				return;
-			}
-			if (uploadFile.size > 20 * 1024 * 1024) {
-				setError("ファイルサイズが20MBを超えています");
-				return;
-			}
+			if (!uploadFile) return setError("ファイルを選択してください");
+			if (uploadFile.size > 20 * 1024 * 1024)
+				return setError("ファイルサイズが20MBを超えています");
 
 			const _uploadCsv = await readCsvFile(uploadFile);
 			if (!isValidCsvFormat(_uploadCsv)) {
-				setError("CSVファイルの形式が正しくありません");
-				return;
-			}
-			if (!_uploadCsv.startsWith("company_name,base_url")) {
-				setError(
+				return setError(
 					"ファイルの形式が正しくないか、文字化けが発生している可能性があります。UTF-8形式のCSVファイルを使用してください。",
 				);
-				return;
 			}
 
-			const request = convertCsvToJson(_uploadCsv);
 			const response = await postAccessJudgmentUrl(
-				request.createAccessJudgmentUrlsRequest,
+				convertCsvToJson(_uploadCsv).createAccessJudgmentUrlsRequest,
 			);
 
 			setDownloadFile(
@@ -60,36 +49,13 @@ export function useUploadFile() {
 					type: "text/csv",
 				}),
 			);
-
 			navigate("/complete");
 		} catch (err) {
-			if (err instanceof PostSalesFileError) {
-				switch (err.type) {
-					case "BadRequest":
-						setError(
-							"CSVのフォーマットが不正です。サンプルCSVを確認してください",
-						);
-						break;
-					case "InternalServerError":
-						setError(
-							"サーバーでエラーが発生しました。時間をおいて再度お試しください",
-						);
-						break;
-					case "FetchApiError":
-						setError(
-							"通信エラーが発生しました。インターネット接続を確認してください",
-						);
-						break;
-					default:
-						setError(
-							"予期せぬエラーが発生しました。時間をおいて再度お試しください",
-						);
-				}
-			} else {
-				setError(
-					"予期せぬエラーが発生しました。時間をおいて再度お試しください",
-				);
-			}
+			setError(
+				err instanceof CreateAccessJudgmentUrlError
+					? err.message
+					: "予期せぬエラーが発生しました。",
+			);
 		} finally {
 			setIsLoading(false);
 		}
