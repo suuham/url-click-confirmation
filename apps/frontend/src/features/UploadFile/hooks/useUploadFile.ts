@@ -58,6 +58,7 @@ export function useUploadFile() {
 			);
 		} finally {
 			setIsLoading(false);
+			setUploadFile(null);
 		}
 	};
 
