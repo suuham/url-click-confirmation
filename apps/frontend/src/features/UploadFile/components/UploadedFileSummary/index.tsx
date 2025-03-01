@@ -9,7 +9,7 @@ export function UploadedFileSummary({ name, size }: Props) {
 	return (
 		<div className={styles["file-summary-block"]}>
 			<div>{name}</div>
-			<div>{(size / 1024).toFixed(2)} KB</div>
+			<div>{Math.floor(size / 1024)} KB</div>
 		</div>
 	);
 }

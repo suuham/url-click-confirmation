@@ -30,8 +30,8 @@ export function useUploadFile() {
 			setIsLoading(true);
 
 			if (!uploadFile) return setError("ファイルを選択してください");
-			if (uploadFile.size > 20 * 1024 * 1024)
-				return setError("ファイルサイズが20MBを超えています");
+			if (uploadFile.size > 1 * 1024 * 1024)
+				return setError("ファイルサイズが1MBを超えています");
 
 			const _uploadCsv = await readCsvFile(uploadFile);
 			if (!isValidCsvFormat(_uploadCsv)) {
