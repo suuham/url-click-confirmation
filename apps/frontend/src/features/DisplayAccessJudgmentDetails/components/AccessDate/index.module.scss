@@ -1,0 +1,41 @@
+.container {
+  position: relative;
+  display: inline-block;
+
+  .trigger {
+    font: inherit;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    background: none;
+    border: none;
+  }
+
+  .popover {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 100;
+    width: max-content;
+    padding: $sm;
+    white-space: nowrap;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+    transform: translateX(-50%);
+
+    ul {
+      gap: $sm;
+      padding: 0;
+      margin: 0;
+      font-size: $font-size-xs;
+      list-style: none;
+
+      .empty {
+        color: gray;
+        text-align: center;
+      }
+    }
+  }
+}
