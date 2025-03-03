@@ -1,16 +1,17 @@
+import { downloadFileAtom, uploadedFileAtom } from "@/stores";
+import { useAtom, useSetAtom } from "jotai";
 import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useAtom, useSetAtom } from "jotai";
-import { downloadFileAtom, uploadedFileAtom } from "@/stores";
 
+import { readCsvFile } from "@/utils/readFile";
+import { useNavigate } from "react-router";
+import { CreateAccessJudgmentUrlError } from "../api/errors";
+import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
 import {
 	convertCsvToJson,
 	convertJsonToCsv,
 } from "../functions/accessJudgmentCsv";
-import { readCsvFile } from "@/utils/readFile";
 import { isValidCsvFormat } from "../functions/isValidCsvFormat";
-import { postAccessJudgmentUrl } from "../api/postAccessJudgmentUrl";
-import { useNavigate } from "react-router";
 
 export function useUploadFile() {
 	const navigate = useNavigate();
@@ -28,26 +29,19 @@ export function useUploadFile() {
 		try {
 			setIsLoading(true);
 
-			if (!uploadFile) {
-				setError("ファイルを選択してください");
-				return;
-			}
+			if (!uploadFile) return setError("ファイルを選択してください");
+			if (uploadFile.size > 20 * 1024 * 1024)
+				return setError("ファイルサイズが20MBを超えています");
 
 			const _uploadCsv = await readCsvFile(uploadFile);
 			if (!isValidCsvFormat(_uploadCsv)) {
-				setError("CSVファイルの形式が正しくありません");
-				return;
-			}
-			if (!_uploadCsv.startsWith("company_name,base_url")) {
-				setError(
+				return setError(
 					"ファイルの形式が正しくないか、文字化けが発生している可能性があります。UTF-8形式のCSVファイルを使用してください。",
 				);
-				return;
 			}
 
-			const request = convertCsvToJson(_uploadCsv);
 			const response = await postAccessJudgmentUrl(
-				request.createAccessJudgmentUrlsRequest,
+				convertCsvToJson(_uploadCsv).createAccessJudgmentUrlsRequest,
 			);
 
 			setDownloadFile(
@@ -55,10 +49,13 @@ export function useUploadFile() {
 					type: "text/csv",
 				}),
 			);
-
 			navigate("/complete");
 		} catch (err) {
-			setError("エラーが発生しました");
+			setError(
+				err instanceof CreateAccessJudgmentUrlError
+					? err.message
+					: "予期せぬエラーが発生しました。",
+			);
 		} finally {
 			setIsLoading(false);
 		}
@@ -66,7 +63,7 @@ export function useUploadFile() {
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({
 		accept: { "text/csv": [".csv"] },
-		onDrop: async (acceptedFiles, fileRejections) => {
+		onDrop: (acceptedFiles, fileRejections) => {
 			if (fileRejections.length > 0) {
 				setError("CSVファイルのみアップロードできます");
 				return;

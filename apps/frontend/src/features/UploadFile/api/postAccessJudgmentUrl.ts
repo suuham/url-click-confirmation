@@ -1,10 +1,10 @@
 import { BACKEND_URL } from "@/constants";
 
-import { PostSalesFileError } from "./errors";
-import {
+import type {
 	CreateAccessJudgmentUrlsRequest,
 	CreateAccessJudgmentUrlsResponse,
 } from "@/types/scheme";
+import { CreateAccessJudgmentUrlError } from "./errors";
 
 export const postAccessJudgmentUrl = async (
 	request: CreateAccessJudgmentUrlsRequest,
@@ -19,19 +19,17 @@ export const postAccessJudgmentUrl = async (
 		});
 
 		if (response.status === 400) {
-			throw new PostSalesFileError("BadRequest", "不正なURLです");
-		} else if (response.status === 500) {
-			throw new PostSalesFileError("InternalServerError", "サーバーエラーです");
+			throw new CreateAccessJudgmentUrlError("BadRequest");
+		}
+		if (response.status === 500) {
+			throw new CreateAccessJudgmentUrlError("InternalServerError");
 		}
 
 		return await response.json();
 	} catch (err: unknown) {
 		if (err instanceof Error) {
-			throw new PostSalesFileError("FetchApiError", err.message);
+			throw new CreateAccessJudgmentUrlError("FetchApiError");
 		}
-		throw new PostSalesFileError(
-			"UnexpectedError",
-			"予期しないエラーが発生しました",
-		);
+		throw new CreateAccessJudgmentUrlError("UnexpectedError");
 	}
 };

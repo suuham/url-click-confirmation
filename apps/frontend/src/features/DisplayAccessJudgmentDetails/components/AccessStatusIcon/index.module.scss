@@ -1,0 +1,15 @@
+.access-status-icon {
+  padding: $sm $xs;
+  font-size: $font-size-xs;
+  color: $text-color-white;
+  text-align: center;
+  border-radius: $radius-lg;
+}
+
+.accessed {
+  background-color: #48bb78;
+}
+
+.not-accessed {
+  background-color: #a0aec0;
+}

@@ -1,10 +1,10 @@
 import { Button } from "@/components/Button";
 
-import colorStyles from "@/styles/colors.module.scss";
-import styles from "./index.module.scss";
-import { useDownloadFile } from "../hooks/useDownloadFile";
-import { Link } from "react-router";
 import { ROUTES } from "@/constants";
+import colorStyles from "@/styles/colors.module.scss";
+import { Link } from "react-router";
+import { useDownloadFile } from "../hooks/useDownloadFile";
+import styles from "./index.module.scss";
 
 export function DownloadAccessJudgmentUrlFileBoard() {
 	const { onClickDownload } = useDownloadFile();

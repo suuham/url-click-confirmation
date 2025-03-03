@@ -1,0 +1,48 @@
+.access-judgment-url-details-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  table {
+    width: 100%;
+    font-family: sans-serif;
+    font-size: $font-size-md;
+    letter-spacing: 1px;
+    border-collapse: collapse;
+    border: none;
+  }
+
+  thead,
+  tfoot {
+    font-size: $font-size-lg;
+    font-weight: bold;
+  }
+
+  th,
+  td {
+    padding: $sm $md;
+    font-weight: bold;
+    text-align: center;
+    border-top: 1px solid $table-border-color;
+    border-right: none;
+    border-bottom: 1px solid $table-border-color;
+    border-left: none;
+  }
+
+  thead th {
+    border-top: none;
+  }
+
+  td:last-of-type {
+    text-align: center;
+  }
+
+  tbody > tr:nth-of-type(even) {
+    font-size: $font-size-md;
+  }
+
+  tfoot th {
+    text-align: right;
+  }
+}

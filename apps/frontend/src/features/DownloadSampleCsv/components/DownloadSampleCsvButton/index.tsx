@@ -3,14 +3,14 @@ import colorStyles from "@/styles/colors.module.scss";
 import { useDownloadFile } from "../../hooks/useDownloadFile";
 
 export function DownloadSampleCsvButton() {
-	const { handleDownloadSampleCSV } = useDownloadFile();
+	const { handleDownloadSampleCsv } = useDownloadFile();
 	return (
 		<Button
-			text="サンプルをダウンロード"
+			text="サンプルダウンロード"
 			backgroundColor={colorStyles.buttonColorGray}
 			size="sm"
-			isOutline
-			onClick={handleDownloadSampleCSV}
+			isOutline={true}
+			onClick={handleDownloadSampleCsv}
 		/>
 	);
 }

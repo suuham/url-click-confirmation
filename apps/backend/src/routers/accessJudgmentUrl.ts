@@ -5,6 +5,7 @@ import {
 	getAccessJudgmentUrlsQuerySchema,
 	getAccessJudgmentUrlsResponseSchema,
 	viewAccessJudgmentUrlParamsSchema,
+	viewAccessJudgmentUrlQuerySchema,
 } from "~/schema/accessJudgmentUrl";
 import { errorResponseSchema } from "~/schema/error";
 
@@ -42,6 +43,7 @@ export const viewAccessJudgmentUrlsRoute = createRoute({
 		"アクセス判定URLの状態をアクセス済みにし、ベースURLにリダイレクト",
 	request: {
 		params: viewAccessJudgmentUrlParamsSchema,
+		query: viewAccessJudgmentUrlQuerySchema,
 	},
 	responses: {
 		302: {

@@ -1,50 +1,54 @@
-# React + TypeScript + Vite
+# 営業リスト作成クライアント
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 実行方法
 
-Currently, two official plugins are available:
+### 0. 事前準備
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#### 環境変数の追加
 
-## Expanding the ESLint configuration
+`frontend`ディレクトリ直下(`.env.example`と同階層)に`.env`ファイルを追加してください
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```.env
+VITE_BACKEND_URL=http://localhost:4000
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+#### サーバの起動
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+[こちらのドキュメント](https://github.com/suuham/url-click-confirmation/blob/dev/apps/backend/README.md)を参考にしてください
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### 1. `frontend`ディレクトリへ移動
+
+```shell
+cd apps/frontend
+```
+
+### 2. ライブラリのインストール
+
+```shell
+pnpm install
+```
+
+### 3. 開発者サーバの起動
+
+```shell
+pnpm dev
+```
+
+`http://localhost:5173/`にアクセスすると画面が表示されます
+
+## 設計やコーディングのルール
+
+### ディレクトリの説明
+
+[こちら](https://github.com/suuham/sales-list-scraping/blob/main/frontend/src/README.md)を参照してください
+
+## その他以外のコマンド説明
+
+### リンター・フォーマッターの適用
+
+> [!NOTE]
+> pre-commit 時にも以下のコマンドは実行されます
+
+```
+pnpm format
 ```
