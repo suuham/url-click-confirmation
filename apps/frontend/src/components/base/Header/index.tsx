@@ -1,14 +1,12 @@
 import logoImage from "@/assets/logo.png";
 import { Link } from "react-router";
 
-import { currentPageNameAtom } from "@/stores";
-import { useAtom } from "jotai";
-
+import { useCurrentPage } from "@/hooks/useCurrentPage";
 import { NAV_ITEMS } from "./constants";
 import styles from "./index.module.scss";
 
 export function Header() {
-	const [currentPageName, setCurrentPageName] = useAtom(currentPageNameAtom);
+	const { currentPageName, handleCurrentPage } = useCurrentPage();
 
 	return (
 		<header className={styles.header}>
@@ -27,7 +25,7 @@ export function Header() {
 							key={path}
 							className={currentPageName !== path ? styles["inactive"] : ""}
 						>
-							<Link to={path} onClick={() => setCurrentPageName(path)}>
+							<Link to={path} onClick={() => handleCurrentPage(path)}>
 								{name}
 							</Link>
 						</li>
