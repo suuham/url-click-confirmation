@@ -17,44 +17,39 @@ pnpm i
 `.env.example`と同じ場所に以下のファイルを追加
 
 ```.env
-# db container
-POSTGRES_CONTAINER_NAME=url-click-confirmation-db
-POSTGRES_DB=url-click-confirmation
-POSTGRES_USER=user
-POSTGRES_PASSWORD=password
-POSTGRES_HOST_AUTH_METHOD=trust
-POSTGRES_PORT=5432
-
-# prisma
-DATABASE_URL=postgresql://user:password@localhost:5432/url-click-confirmation?schema=public
+DATABASE_URL="file:./dev.db"
 ```
 
-### 2. DBの立ち上げ・マイグレーション
+#### D1の設定を追記
+
+`wrangler.jsonc`に追記
+
+```jsonc
+"d1_databases": [
+    {
+        "binding": "DB",
+        "database_name": "",
+        "database_id": ""
+    }
+]
+```
+
+### 2. サーバの起動
 
 ```shell
-make up
+pnpm dev
 ```
 
-```shell
-pnpm prisma migrate dev --name init
-```
+### 3. サーバにアクセス
 
-### 3. サーバの起動
-
-```shell
-pnpm run dev
-```
-
-### 4. サーバにアクセス
-
-`http://localhost:4000/ui`にアクセスすると API ドキュメントが閲覧できます
+`http://localhost:8787/ui`にアクセスすると API ドキュメントが閲覧できます
 
 ## その他
 
-### DBに接続したい場合
+### デプロイ
 
 ```shell
-make connect-db
+pnpm run deploy
 ```
 
 ### prisma studioの起動
