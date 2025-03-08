@@ -1,5 +1,7 @@
 # 営業リスト作成クライアント
 
+> デプロイ先：https://url-click-confirmation-frontend.vercel.app/
+
 ## 実行方法
 
 ### 0. 事前準備

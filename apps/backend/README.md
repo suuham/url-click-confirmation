@@ -1,5 +1,7 @@
 # アクセス判定 URL 発行・確認サーバ
 
+> デプロイ先：https://backend.honokarasu.workers.dev
+
 `apps/backend`以下での操作です
 
 ## 実行方法
