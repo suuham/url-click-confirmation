@@ -1,20 +1,22 @@
 import type { RouteHandler } from "@hono/zod-openapi";
 import type { Context } from "hono";
-import { getAccessJudgmentUrlById } from "~/models/accessJudgmentUrl";
-import { insertAccessJudgmentUrlLog } from "~/models/accessJudgmentUrlLog";
-import { getBaseUrlById } from "~/models/baseUrl";
-
-import type { viewAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
-import { viewAccessJudgmentUrlQuerySchema } from "~/schema/accessJudgmentUrl";
+import { getAccessJudgmentUrlById } from "../models/accessJudgmentUrl";
+import { insertAccessJudgmentUrlLog } from "../models/accessJudgmentUrlLog";
+import { getBaseUrlById } from "../models/baseUrl";
+import type { viewAccessJudgmentUrlsRoute } from "../routers/accessJudgmentUrl";
+import { viewAccessJudgmentUrlQuerySchema } from "../schema/accessJudgmentUrl";
 
 export const viewAccessJudgmentUrlHandler: RouteHandler<
 	typeof viewAccessJudgmentUrlsRoute
 > = async (c: Context) => {
+	const db = c.env.DB;
 	const accessJudgmentUrlId = c.req.param("accessJudgmentUrlId");
 	const { isDemo } = viewAccessJudgmentUrlQuerySchema.parse(c.req.query());
 
-	const accessJudgmentUrlRecord =
-		await getAccessJudgmentUrlById(accessJudgmentUrlId);
+	const accessJudgmentUrlRecord = await getAccessJudgmentUrlById(
+		db,
+		accessJudgmentUrlId,
+	);
 	if (!accessJudgmentUrlRecord) {
 		return c.json(
 			{
@@ -27,7 +29,10 @@ export const viewAccessJudgmentUrlHandler: RouteHandler<
 		);
 	}
 
-	const baseUrlRecord = await getBaseUrlById(accessJudgmentUrlRecord.baseUrlId);
+	const baseUrlRecord = await getBaseUrlById(
+		db,
+		accessJudgmentUrlRecord.baseUrlId,
+	);
 	if (!baseUrlRecord) {
 		return c.json(
 			{
@@ -42,7 +47,7 @@ export const viewAccessJudgmentUrlHandler: RouteHandler<
 
 	if (!isDemo) {
 		try {
-			await insertAccessJudgmentUrlLog(accessJudgmentUrlRecord.id);
+			await insertAccessJudgmentUrlLog(db, accessJudgmentUrlRecord.id);
 		} catch (e: unknown) {
 			const errorMessage =
 				e instanceof Error ? e.message : "An unknown error occurred";

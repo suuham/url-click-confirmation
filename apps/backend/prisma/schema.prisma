@@ -2,32 +2,33 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Company {
-  id                  String               @id @default(cuid())
-  name                String               @unique @db.VarChar(256)
-  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
-  deletedAt           DateTime?            @map("deleted_at") @db.Timestamp(0)
+  id                 String              @id @default(cuid())
+  name               String              @unique
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @default(now()) @updatedAt @map("updated_at")
+  deletedAt          DateTime?           @map("deleted_at")
   accessJudgmentUrls AccessJudgmentUrl[]
 
   @@map("companies")
 }
 
 model BaseUrl {
-  id                 String               @id @default(cuid())
-  title              String               @db.VarChar(256)
-  url                String               @unique @map("url") @db.VarChar(256)
-  deletedAt          DateTime?            @map("deleted_at") @db.Timestamp(0)
-  createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt          DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  id                String              @id @default(cuid())
+  title             String
+  url               String              @unique @map("url")
+  deletedAt         DateTime?           @map("deleted_at")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @default(now()) @updatedAt @map("updated_at")
   AccessJudgmentUrl AccessJudgmentUrl[]
 
   @@map("base_urls")
@@ -35,15 +36,15 @@ model BaseUrl {
 
 model AccessJudgmentUrl {
   id        String    @id @default(cuid())
-  deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
 
   baseUrlId String  @map("base_url_id")
   baseUrl   BaseUrl @relation(fields: [baseUrlId], references: [id])
 
-  companyId             String                  @map("company_id")
-  company               Company                 @relation(fields: [companyId], references: [id])
+  companyId            String                 @map("company_id")
+  company              Company                @relation(fields: [companyId], references: [id])
   AccessJudgmentUrlLog AccessJudgmentUrlLog[]
 
   @@unique([baseUrlId, companyId])
@@ -52,10 +53,10 @@ model AccessJudgmentUrl {
 
 model AccessJudgmentUrlLog {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  createdAt DateTime @default(now()) @map("created_at")
 
   accessJudgmentUrl   AccessJudgmentUrl @relation(fields: [accessJudgmentUrlId], references: [id])
-  accessJudgmentUrlId String             @map("access_judgment_url_id")
+  accessJudgmentUrlId String            @map("access_judgment_url_id")
 
   @@map("access_judgment_url_logs")
 }

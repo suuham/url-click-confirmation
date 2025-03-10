@@ -1,20 +1,17 @@
 {
-  "extends": "@next-hono-monorepo/ts-config/base.json",
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "dist",
-    "module": "CommonJS",
-    "target": "ES2019",
-    "moduleResolution": "Node",
-    "forceConsistentCasingInFileNames": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "types": ["node"],
+    "lib": [
+      "ESNext"
+    ],
+    "types": [
+      "@cloudflare/workers-types/2023-07-01"
+    ],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
-  }
+    "jsxImportSource": "hono/jsx"
+  },
 }
