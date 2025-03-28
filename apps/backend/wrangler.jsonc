@@ -24,8 +24,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "",
-      "database_id": ""
+      "database_name": "url-click-confirmation-db",
+      "database_id": "dd8e1f14-447a-4b90-af75-3228809aa335"
     }
   ]
   // "ai": {
