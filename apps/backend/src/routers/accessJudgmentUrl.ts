@@ -6,8 +6,8 @@ import {
 	getAccessJudgmentUrlsResponseSchema,
 	viewAccessJudgmentUrlParamsSchema,
 	viewAccessJudgmentUrlQuerySchema,
-} from "../schema/accessJudgmentUrl";
-import { errorResponseSchema } from "../schema/error";
+} from "~/schema/accessJudgmentUrl";
+import { errorResponseSchema } from "~/schema/error";
 
 export const getAccessJudgmentUrlsRoute = createRoute({
 	path: "/access-judgment-urls",

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { stringToBoolean, stringToIntWithDefault } from "../utils/queryParse";
+import { stringToBoolean, stringToIntWithDefault } from "~/utils/queryParse";
 import { unixTimestampSchema } from "./time";
 
 export const getAccessJudgmentUrlsQuerySchema = z.object({

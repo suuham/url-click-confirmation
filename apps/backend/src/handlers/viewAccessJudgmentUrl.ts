@@ -1,10 +1,10 @@
 import type { RouteHandler } from "@hono/zod-openapi";
 import type { Context } from "hono";
-import { getAccessJudgmentUrlById } from "../models/accessJudgmentUrl";
-import { insertAccessJudgmentUrlLog } from "../models/accessJudgmentUrlLog";
-import { getBaseUrlById } from "../models/baseUrl";
-import type { viewAccessJudgmentUrlsRoute } from "../routers/accessJudgmentUrl";
-import { viewAccessJudgmentUrlQuerySchema } from "../schema/accessJudgmentUrl";
+import { getAccessJudgmentUrlById } from "~/models/accessJudgmentUrl";
+import { insertAccessJudgmentUrlLog } from "~/models/accessJudgmentUrlLog";
+import { getBaseUrlById } from "~/models/baseUrl";
+import type { viewAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
+import { viewAccessJudgmentUrlQuerySchema } from "~/schema/accessJudgmentUrl";
 
 export const viewAccessJudgmentUrlHandler: RouteHandler<
 	typeof viewAccessJudgmentUrlsRoute

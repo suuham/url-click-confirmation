@@ -5,16 +5,16 @@ import {
 	getAccessJudgmentUrls,
 	getAccessJudgmentUrlsByBaseUrlIds,
 	getAccessJudgmentUrlsByCompanyIds,
-} from "../models/accessJudgmentUrl";
-import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "../models/accessJudgmentUrlLog";
-import { getBaseUrlById, getBaseUrlsByUrlLike } from "../models/baseUrl";
-import { getCompaniesByNameLike, getCompanyById } from "../models/company";
-import type { getAccessJudgmentUrlsRoute } from "../routers/accessJudgmentUrl";
+} from "~/models/accessJudgmentUrl";
+import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/accessJudgmentUrlLog";
+import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/baseUrl";
+import { getCompaniesByNameLike, getCompanyById } from "~/models/company";
+import type { getAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	getAccessJudgmentUrlsQuerySchema,
 	type getAccessJudgmentUrlsResponseSchema,
-} from "../schema/accessJudgmentUrl";
-import { getAccessJudgmentUrl } from "../utils/getRequestOrigin";
+} from "~/schema/accessJudgmentUrl";
+import { getAccessJudgmentUrl } from "~/utils/getRequestOrigin";
 
 type GetAccessJudgmentUrlsResponse = z.infer<
 	typeof getAccessJudgmentUrlsResponseSchema

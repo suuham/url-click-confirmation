@@ -4,17 +4,17 @@ import type { z } from "zod";
 import {
 	getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds,
 	insertAccessJudgmentUrls,
-} from "../models/accessJudgmentUrl";
-import { getBaseUrlsByUrls, insertBaseUrls } from "../models/baseUrl";
-import { getCompaniesByNames, insertCompanies } from "../models/company";
-import type { createAccessJudgmentUrlsRoute } from "../routers/accessJudgmentUrl";
+} from "~/models/accessJudgmentUrl";
+import { getBaseUrlsByUrls, insertBaseUrls } from "~/models/baseUrl";
+import { getCompaniesByNames, insertCompanies } from "~/models/company";
+import type { createAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	createAccessJudgmentUrlsRequestBodySchema,
 	type createAccessJudgmentUrlsResponseSchema,
-} from "../schema/accessJudgmentUrl";
-import type { ErrorResponse } from "../schema/error";
-import { getAccessJudgmentUrl } from "../utils/getRequestOrigin";
-import { validateRequestBody } from "../utils/validateRequestBody";
+} from "~/schema/accessJudgmentUrl";
+import type { ErrorResponse } from "~/schema/error";
+import { getAccessJudgmentUrl } from "~/utils/getRequestOrigin";
+import { validateRequestBody } from "~/utils/validateRequestBody";
 
 type CreateAccessJudgmentUrlsResponse = z.infer<
 	typeof createAccessJudgmentUrlsResponseSchema

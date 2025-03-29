@@ -1,5 +1,5 @@
 import type { AccessJudgmentUrlLog } from "@prisma/client";
-import { createPrismaClientWithD1 } from "../lib/prisma";
+import { createPrismaClientWithD1 } from "~/lib/prisma";
 
 export const insertAccessJudgmentUrlLog = async (
 	db: D1Database,

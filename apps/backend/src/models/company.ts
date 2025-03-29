@@ -1,5 +1,5 @@
 import type { Company } from "@prisma/client";
-import { createPrismaClientWithD1 } from "../lib/prisma";
+import { createPrismaClientWithD1 } from "~/lib/prisma";
 
 export const insertCompanies = async (
 	db: D1Database,
