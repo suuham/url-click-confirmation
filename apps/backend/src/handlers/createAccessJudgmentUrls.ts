@@ -7,7 +7,6 @@ import {
 } from "~/models/accessJudgmentUrl";
 import { getBaseUrlsByUrls, insertBaseUrls } from "~/models/baseUrl";
 import { getCompaniesByNames, insertCompanies } from "~/models/company";
-
 import type { createAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	createAccessJudgmentUrlsRequestBodySchema,
@@ -24,6 +23,7 @@ type CreateAccessJudgmentUrlsResponse = z.infer<
 export const createAccessJudgmentUrlsHandler: RouteHandler<
 	typeof createAccessJudgmentUrlsRoute
 > = async (c: Context) => {
+	const db = c.env.DB;
 	const validationResult = await validateRequestBody(
 		c,
 		createAccessJudgmentUrlsRequestBodySchema,
@@ -47,8 +47,8 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 	}));
 
 	try {
-		await insertCompanies(companyNames);
-		await insertBaseUrls(baseUrlUrlInfo);
+		await insertCompanies(db, companyNames);
+		await insertBaseUrls(db, baseUrlUrlInfo);
 	} catch (e: unknown) {
 		const errorMessage =
 			e instanceof Error ? e.message : "An unknown error occurred";
@@ -61,8 +61,9 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 		return c.json(errorResponse, 500);
 	}
 
-	const companyRecords = await getCompaniesByNames(companyNames);
+	const companyRecords = await getCompaniesByNames(db, companyNames);
 	const baseUrlRecords = await getBaseUrlsByUrls(
+		db,
 		baseUrls.map((baseUrl) => baseUrl.url),
 	);
 
@@ -76,7 +77,7 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 	);
 
 	try {
-		await insertAccessJudgmentUrls(companyIdBaseUrlIdMapping);
+		await insertAccessJudgmentUrls(db, companyIdBaseUrlIdMapping);
 	} catch (e: unknown) {
 		const errorMessage =
 			e instanceof Error ? e.message : "An unknown error occurred";
@@ -92,6 +93,7 @@ export const createAccessJudgmentUrlsHandler: RouteHandler<
 
 	const accessJudgmentUrls =
 		await getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds(
+			db,
 			companyIdBaseUrlIdMapping,
 		);
 

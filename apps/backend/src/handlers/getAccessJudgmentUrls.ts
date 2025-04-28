@@ -23,16 +23,20 @@ type GetAccessJudgmentUrlsResponse = z.infer<
 export const getAccessJudgmentUrlsHandler: RouteHandler<
 	typeof getAccessJudgmentUrlsRoute
 > = async (c: Context) => {
+	const db = c.env.DB;
 	const { companyName, baseUrl, limit, offset, sort, order } =
 		getAccessJudgmentUrlsQuerySchema.parse(c.req.query());
 
 	const companyRecords = companyName
-		? await getCompaniesByNameLike(companyName)
+		? await getCompaniesByNameLike(db, companyName)
 		: null;
-	const baseUrlRecords = baseUrl ? await getBaseUrlsByUrlLike(baseUrl) : null;
+	const baseUrlRecords = baseUrl
+		? await getBaseUrlsByUrlLike(db, baseUrl)
+		: null;
 
 	const accessJudgmentUrlRecords = companyRecords
 		? await getAccessJudgmentUrlsByCompanyIds(
+				db,
 				limit,
 				offset,
 				sort,
@@ -41,25 +45,29 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 			)
 		: baseUrlRecords
 			? await getAccessJudgmentUrlsByBaseUrlIds(
+					db,
 					limit,
 					offset,
 					sort,
 					order,
 					baseUrlRecords.map((b) => b.id),
 				)
-			: await getAccessJudgmentUrls(limit, offset, sort, order);
+			: await getAccessJudgmentUrls(db, limit, offset, sort, order);
 
 	const response: GetAccessJudgmentUrlsResponse = {
 		accessJudgmentUrls: await Promise.all(
 			accessJudgmentUrlRecords.map(async (accessJudgmentUrlRecord) => {
 				const accessJudgmentUrlLogRecords =
 					await getAccessJudgmentUrlLogsByAccessJudgmentUrlId(
+						db,
 						accessJudgmentUrlRecord.id,
 					);
 				const companyRecord = (await getCompanyById(
+					db,
 					accessJudgmentUrlRecord.companyId,
 				))!;
 				const baseUrlRecord = (await getBaseUrlById(
+					db,
 					accessJudgmentUrlRecord.baseUrlId,
 				))!;
 
