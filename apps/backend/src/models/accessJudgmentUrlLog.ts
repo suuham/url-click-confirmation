@@ -20,3 +20,17 @@ export const getAccessJudgmentUrlLogsByAccessJudgmentUrlId = async (
 		where: { accessJudgmentUrlId },
 	});
 };
+
+export const getIsExistAccessJudgmentUrlLog = async (
+	db: D1Database,
+	accessJudgmentUrlId: string,
+): Promise<boolean> => {
+	const prismaClient = createPrismaClientWithD1(db);
+
+	const accessJudgmentUrlLog =
+		await prismaClient.accessJudgmentUrlLog.findFirst({
+			where: { accessJudgmentUrlId },
+		});
+
+	return accessJudgmentUrlLog !== null;
+};
