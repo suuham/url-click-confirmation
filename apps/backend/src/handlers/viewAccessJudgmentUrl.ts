@@ -65,7 +65,10 @@ export const viewAccessJudgmentUrlHandler: RouteHandler<
 					from: c.env.FROM_MAIL_ADDRESS,
 					to: c.env.TO_MAIL_ADDRESS,
 					subject: `[初回アクセス] ${company?.name}がアクセス判定URLにアクセスしました`,
-					text: `${company?.name}がアクセス判定URLにアクセスしました`,
+					text: `${company?.name}がアクセス判定URLにアクセスしました
+
+		  アクセスされたURL: ${baseUrlRecord.url}
+		  `,
 				});
 			}
 		} catch (e: unknown) {
