@@ -4,14 +4,35 @@ import { createPrismaClientWithD1 } from "~/lib/prisma";
 export const insertCompanies = async (
 	db: D1Database,
 	names: string[],
+	batchSize = 100,
 ): Promise<void> => {
 	const prismaClient = createPrismaClientWithD1(db);
-	for (const name of names) {
-		await prismaClient.company.upsert({
-			where: { name },
-			update: {},
-			create: { name },
+
+	for (let i = 0; i < names.length; i += batchSize) {
+		const batch = Array.from(new Set(names.slice(i, i + batchSize)));
+
+		// 既存の会社名を取得
+		const existingCompanies = await prismaClient.company.findMany({
+			where: {
+				name: {
+					in: batch,
+				},
+			},
+			select: {
+				name: true,
+			},
 		});
+
+		const existingNames = new Set(
+			existingCompanies.map((company) => company.name),
+		);
+		const newNames = batch.filter((name) => !existingNames.has(name));
+
+		if (newNames.length > 0) {
+			await prismaClient.company.createMany({
+				data: newNames.map((name) => ({ name })),
+			});
+		}
 	}
 };
 
