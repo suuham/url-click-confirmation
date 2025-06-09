@@ -4,21 +4,45 @@ import { createPrismaClientWithD1 } from "~/lib/prisma";
 export const insertBaseUrls = async (
 	db: D1Database,
 	baseUrls: { title: string; url: string }[],
+	batchSize = 100,
 ): Promise<void> => {
 	const prismaClient = createPrismaClientWithD1(db);
-	await Promise.all(
-		baseUrls.map(async ({ title, url }) => {
-			const existingBaseUrl = await prismaClient.baseUrl.findFirst({
-				where: { url },
-			});
 
-			if (!existingBaseUrl) {
-				await prismaClient.baseUrl.create({
-					data: { title, url },
-				});
-			}
-		}),
-	);
+	for (let i = 0; i < baseUrls.length; i += batchSize) {
+		// URLの重複を除去
+		const batch = Array.from(
+			new Map(
+				baseUrls
+					.slice(i, i + batchSize)
+					.map((baseUrl) => [baseUrl.url, baseUrl]),
+			).values(),
+		);
+
+		// 既存のURLを取得
+		const existingBaseUrls = await prismaClient.baseUrl.findMany({
+			where: {
+				url: {
+					in: batch.map((baseUrl) => baseUrl.url),
+				},
+			},
+			select: {
+				url: true,
+			},
+		});
+
+		const existingUrls = new Set(
+			existingBaseUrls.map((baseUrl) => baseUrl.url),
+		);
+		const newBaseUrls = batch.filter(
+			(baseUrl) => !existingUrls.has(baseUrl.url),
+		);
+
+		if (newBaseUrls.length > 0) {
+			await prismaClient.baseUrl.createMany({
+				data: newBaseUrls,
+			});
+		}
+	}
 };
 
 export const getBaseUrlsByUrlLike = async (
