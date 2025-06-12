@@ -8,5 +8,6 @@ export const ROUTES = {
 } as const;
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const TOAST_DURATION = 3000;
+export const ITEMS_PER_PAGE = 50;
 
 export type Routes = (typeof ROUTES)[keyof typeof ROUTES];
