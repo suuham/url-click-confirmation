@@ -66,6 +66,13 @@ export const getAccessJudgmentUrls = async (
 	});
 };
 
+export const getAccessJudgmentUrlsCount = async (
+	db: D1Database,
+): Promise<number> => {
+	const prismaClient = createPrismaClientWithD1(db);
+	return await prismaClient.accessJudgmentUrl.count();
+};
+
 export const getAccessJudgmentUrlsByCompanyIds = async (
 	db: D1Database,
 	limit: number,

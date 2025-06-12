@@ -5,6 +5,7 @@ import {
 	getAccessJudgmentUrls,
 	getAccessJudgmentUrlsByBaseUrlIds,
 	getAccessJudgmentUrlsByCompanyIds,
+	getAccessJudgmentUrlsCount,
 } from "~/models/accessJudgmentUrl";
 import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/accessJudgmentUrlLog";
 import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/baseUrl";
@@ -54,6 +55,8 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 				)
 			: await getAccessJudgmentUrls(db, limit, offset, sort, order);
 
+	const totalCount = await getAccessJudgmentUrlsCount(db);
+
 	const response: GetAccessJudgmentUrlsResponse = {
 		accessJudgmentUrls: await Promise.all(
 			accessJudgmentUrlRecords.map(async (accessJudgmentUrlRecord) => {
@@ -100,6 +103,7 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 				};
 			}),
 		),
+		totalCount,
 	};
 
 	return c.json(response, 200);
