@@ -44,6 +44,14 @@ export const getCompanyById = async (
 	return await prismaClient.company.findUnique({ where: { id } });
 };
 
+export const getCompaniesByIds = async (
+	db: D1Database,
+	ids: string[],
+): Promise<Company[]> => {
+	const prismaClient = createPrismaClientWithD1(db);
+	return await prismaClient.company.findMany({ where: { id: { in: ids } } });
+};
+
 export const getCompaniesByNameLike = async (
 	db: D1Database,
 	name: string,
