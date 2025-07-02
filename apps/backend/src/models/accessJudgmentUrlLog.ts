@@ -11,13 +11,13 @@ export const insertAccessJudgmentUrlLog = async (
 	});
 };
 
-export const getAccessJudgmentUrlLogsByAccessJudgmentUrlId = async (
+export const getAccessJudgmentUrlLogsByAccessJudgmentUrlIds = async (
 	db: D1Database,
-	accessJudgmentUrlId: string,
+	accessJudgmentUrlIds: string[],
 ): Promise<AccessJudgmentUrlLog[]> => {
 	const prismaClient = createPrismaClientWithD1(db);
 	return await prismaClient.accessJudgmentUrlLog.findMany({
-		where: { accessJudgmentUrlId },
+		where: { accessJudgmentUrlId: { in: accessJudgmentUrlIds } },
 	});
 };
 
