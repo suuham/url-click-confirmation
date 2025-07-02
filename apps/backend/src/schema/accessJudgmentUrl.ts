@@ -92,6 +92,9 @@ export const getAccessJudgmentUrlsResponseSchema = z.object({
 			}),
 		}),
 	),
+	totalCount: z.number().openapi({
+		description: "アクセス判定URLの総数",
+	}),
 });
 
 export const viewAccessJudgmentUrlParamsSchema = z.object({

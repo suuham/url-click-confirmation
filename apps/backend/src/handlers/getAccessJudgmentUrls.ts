@@ -5,10 +5,11 @@ import {
 	getAccessJudgmentUrls,
 	getAccessJudgmentUrlsByBaseUrlIds,
 	getAccessJudgmentUrlsByCompanyIds,
+	getAccessJudgmentUrlsCount,
 } from "~/models/accessJudgmentUrl";
-import { getAccessJudgmentUrlLogsByAccessJudgmentUrlId } from "~/models/accessJudgmentUrlLog";
-import { getBaseUrlById, getBaseUrlsByUrlLike } from "~/models/baseUrl";
-import { getCompaniesByNameLike, getCompanyById } from "~/models/company";
+import { getAccessJudgmentUrlLogsByAccessJudgmentUrlIds } from "~/models/accessJudgmentUrlLog";
+import { getBaseUrlsByIds, getBaseUrlsByUrlLike } from "~/models/baseUrl";
+import { getCompaniesByIds, getCompaniesByNameLike } from "~/models/company";
 import type { getAccessJudgmentUrlsRoute } from "~/routers/accessJudgmentUrl";
 import {
 	getAccessJudgmentUrlsQuerySchema,
@@ -54,52 +55,82 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 				)
 			: await getAccessJudgmentUrls(db, limit, offset, sort, order);
 
-	const response: GetAccessJudgmentUrlsResponse = {
-		accessJudgmentUrls: await Promise.all(
-			accessJudgmentUrlRecords.map(async (accessJudgmentUrlRecord) => {
-				const accessJudgmentUrlLogRecords =
-					await getAccessJudgmentUrlLogsByAccessJudgmentUrlId(
-						db,
-						accessJudgmentUrlRecord.id,
-					);
-				const companyRecord = (await getCompanyById(
-					db,
-					accessJudgmentUrlRecord.companyId,
-				))!;
-				const baseUrlRecord = (await getBaseUrlById(
-					db,
-					accessJudgmentUrlRecord.baseUrlId,
-				))!;
+	const totalCount = await getAccessJudgmentUrlsCount(db);
 
-				const lastViewedAt = accessJudgmentUrlLogRecords
+	// 関連データを一括で取得
+	const accessJudgmentUrlIds = accessJudgmentUrlRecords.map(
+		(record) => record.id,
+	);
+	const companyIds = [
+		...new Set(accessJudgmentUrlRecords.map((record) => record.companyId)),
+	];
+	const baseUrlIds = [
+		...new Set(accessJudgmentUrlRecords.map((record) => record.baseUrlId)),
+	];
+
+	const [
+		accessJudgmentUrlLogRecords,
+		relatedCompanyRecords,
+		relatedBaseUrlRecords,
+	] = await Promise.all([
+		getAccessJudgmentUrlLogsByAccessJudgmentUrlIds(db, accessJudgmentUrlIds),
+		getCompaniesByIds(db, companyIds),
+		getBaseUrlsByIds(db, baseUrlIds),
+	]);
+
+	// 会社レコードをマップ化
+	const companiesById = new Map(
+		relatedCompanyRecords.map((company) => [company.id, company]),
+	);
+
+	// ベースURLレコードをマップ化
+	const baseUrlsById = new Map(
+		relatedBaseUrlRecords.map((baseUrl) => [baseUrl?.id, baseUrl]),
+	);
+
+	const response: GetAccessJudgmentUrlsResponse = {
+		accessJudgmentUrls: accessJudgmentUrlRecords.map(
+			(accessJudgmentUrlRecord) => {
+				const logs = accessJudgmentUrlLogRecords.filter(
+					(log) => log.accessJudgmentUrlId === accessJudgmentUrlRecord.id,
+				);
+				const company = companiesById.get(accessJudgmentUrlRecord.companyId);
+				const baseUrl = baseUrlsById.get(accessJudgmentUrlRecord.baseUrlId);
+
+				if (!company || !baseUrl) {
+					throw new Error("Company or BaseUrl not found");
+				}
+
+				const lastViewedAt = logs
 					.map((log) => log.createdAt.getTime())
 					.reduce((a, b) => Math.max(a, b), 0);
-				const viewedAts = accessJudgmentUrlLogRecords
+				const viewedAts = logs
 					.map((log) => log.createdAt.getTime())
 					.sort((a, b) => b - a)
 					.slice(1);
 
 				return {
 					company: {
-						id: companyRecord.id,
-						name: companyRecord.name,
+						id: company.id,
+						name: company.name,
 					},
 					baseUrl: {
-						id: baseUrlRecord.id,
-						title: baseUrlRecord.title,
-						url: baseUrlRecord.url,
+						id: baseUrl.id,
+						title: baseUrl.title,
+						url: baseUrl.url,
 					},
 					accessJudgmentUrl: {
 						id: accessJudgmentUrlRecord.id,
 						url: getAccessJudgmentUrl(c, accessJudgmentUrlRecord.id),
-						viewCount: accessJudgmentUrlLogRecords.length,
+						viewCount: logs.length,
 						createdAt: accessJudgmentUrlRecord.createdAt.getTime(),
 						lastViewedAt: lastViewedAt,
 						viewedAts: viewedAts,
 					},
 				};
-			}),
+			},
 		),
+		totalCount,
 	};
 
 	return c.json(response, 200);

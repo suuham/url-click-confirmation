@@ -1,12 +1,41 @@
+import { ITEMS_PER_PAGE } from "@/constants";
 import type { GetAccessJudgmentUrlsResponse } from "@/types/scheme";
 import { escapeCsvValue } from "@/utils/escapeCsvValue";
+import { useCallback, useState } from "react";
+import { GetAccessJudgmentUrlDetailsError } from "../api/errors";
+import { getAccessJudgmentUrlDetails } from "../api/getAccessJudgmentUrlDetails";
 
-export const useDownloadCsv = () => {
-	const handleDownloadCsv = (
-		accessJudgmentUrlsDetails: GetAccessJudgmentUrlsResponse | null,
-	) => {
-		if (!accessJudgmentUrlsDetails) return;
+export const useDownloadCsv = (searchQuery: string, totalPages: number) => {
+	const [isDownloading, setIsDownloading] = useState(false);
+	const fetchAllSearchAccessJudgementUrls = useCallback(async () => {
+		const allUrls: GetAccessJudgmentUrlsResponse["accessJudgmentUrls"] = [];
+		try {
+			for (let i = 0; i < totalPages; i++) {
+				const data = await getAccessJudgmentUrlDetails(
+					searchQuery,
+					"",
+					"",
+					ITEMS_PER_PAGE,
+					i * ITEMS_PER_PAGE,
+				);
+				allUrls.push(...data.accessJudgmentUrls);
+			}
+		} catch (error: unknown) {
+			if (error instanceof GetAccessJudgmentUrlDetailsError) {
+				throw error;
+			}
+			throw new GetAccessJudgmentUrlDetailsError(
+				"FetchApiError",
+				"データの取得に失敗しました",
+			);
+		}
 
+		return allUrls;
+	}, [searchQuery, totalPages]);
+
+	const handleDownloadCsv = useCallback(async () => {
+		setIsDownloading(true);
+		const allUrls = await fetchAllSearchAccessJudgementUrls();
 		const headers = [
 			"企業名",
 			"元URL",
@@ -17,7 +46,7 @@ export const useDownloadCsv = () => {
 			"URL発行日",
 		];
 
-		const rows = accessJudgmentUrlsDetails.accessJudgmentUrls.map((url) => [
+		const rows = allUrls.map((url) => [
 			escapeCsvValue(url.company?.name),
 			escapeCsvValue(url.baseUrl?.url),
 			escapeCsvValue(url.accessJudgmentUrl?.url),
@@ -45,7 +74,8 @@ export const useDownloadCsv = () => {
 		link.download = "access_judgment_urls.csv";
 		link.click();
 		URL.revokeObjectURL(url);
-	};
+		setIsDownloading(false);
+	}, [fetchAllSearchAccessJudgementUrls]);
 
-	return handleDownloadCsv;
+	return { handleDownloadCsv, isDownloading };
 };

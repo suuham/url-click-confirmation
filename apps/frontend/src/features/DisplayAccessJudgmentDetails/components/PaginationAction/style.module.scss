@@ -1,0 +1,10 @@
+.pagination-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+
+  .page-number {
+    font-size: $font-size-sm;
+  }
+}

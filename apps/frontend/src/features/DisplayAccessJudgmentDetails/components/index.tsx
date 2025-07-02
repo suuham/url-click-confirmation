@@ -1,16 +1,27 @@
 import { Button } from "@/components/Button";
+import { useDownloadCsv } from "../hooks/useDownloadCsv";
 import { useSearchQuery } from "../hooks/useSearchQuery";
 import { AccessJudgmentUrlDetailsTable } from "./AccessJudgmentUrlDetailsTable";
 import { AccessJudgmentUrlSearchBar } from "./AccessJudgmentUrlSearchBar";
-
-import { useDownloadCsv } from "../hooks/useDownloadCsv";
+import { DownloadingDialog } from "./DownloadingDialog";
+import { PaginationAction } from "./PaginationAction";
 import styles from "./index.module.scss";
 
 export function AccessJudgmentUrlSearchTable() {
-	const { accessJudgmentUrlsDetails, onChangeSearchQuery, handleSearch } =
-		useSearchQuery();
+	const {
+		accessJudgmentUrlsDetails,
+		searchQuery,
+		onChangeSearchQuery,
+		handleSearch,
+		handlePageChange,
+		currentPage,
+		totalPages,
+	} = useSearchQuery();
 
-	const handleDownloadCsv = useDownloadCsv();
+	const { handleDownloadCsv, isDownloading } = useDownloadCsv(
+		searchQuery,
+		totalPages,
+	);
 
 	return (
 		<div className={styles["access-judgment-url-search-table"]}>
@@ -21,8 +32,8 @@ export function AccessJudgmentUrlSearchTable() {
 				/>
 				<Button
 					text="CSV出力"
-					onClick={() => {
-						handleDownloadCsv(accessJudgmentUrlsDetails);
+					onClick={async () => {
+						await handleDownloadCsv();
 					}}
 					isDisable={!accessJudgmentUrlsDetails}
 				/>
@@ -32,6 +43,14 @@ export function AccessJudgmentUrlSearchTable() {
 					accessJudgmentUrlsDetails={accessJudgmentUrlsDetails}
 				/>
 			</div>
+			<div className={styles["pagination-container"]}>
+				<PaginationAction
+					currentPage={currentPage}
+					totalPages={totalPages}
+					onPageChange={handlePageChange}
+				/>
+			</div>
+			{isDownloading && <DownloadingDialog />}
 		</div>
 	);
 }

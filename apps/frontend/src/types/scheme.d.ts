@@ -39,4 +39,5 @@ export type GetAccessJudgmentUrlsResponse = {
 			viewedAts: number[];
 		};
 	}[];
+	totalCount: number;
 };

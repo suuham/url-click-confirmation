@@ -74,3 +74,13 @@ export const getBaseUrlById = async (
 		where: { id },
 	});
 };
+
+export const getBaseUrlsByIds = async (
+	db: D1Database,
+	ids: string[],
+): Promise<Array<BaseUrl | null>> => {
+	const prismaClient = createPrismaClientWithD1(db);
+	return await prismaClient.baseUrl.findMany({
+		where: { id: { in: ids } },
+	});
+};
