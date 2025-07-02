@@ -4,38 +4,48 @@ import { createPrismaClientWithD1 } from "~/lib/prisma";
 export const insertAccessJudgmentUrls = async (
 	db: D1Database,
 	companyIdBaseUrlIdMapping: { companyId: string; baseUrlId: string }[],
-	batchSize = 100,
+	batchSize = 20,
 ): Promise<void> => {
 	const prismaClient = createPrismaClientWithD1(db);
-	const existingRecords = await prismaClient.accessJudgmentUrl.findMany({
-		where: {
-			// biome-ignore lint/style/useNamingConvention:
-			OR: companyIdBaseUrlIdMapping.map(({ companyId, baseUrlId }) => ({
-				// biome-ignore lint/style/useNamingConvention:
-				AND: [{ companyId }, { baseUrlId }],
-			})),
-		},
-		select: {
-			companyId: true,
-			baseUrlId: true,
-		},
-	});
 
-	const existingCombinations = new Set(
-		existingRecords.map((record) => `${record.companyId}-${record.baseUrlId}`),
-	);
+	for (let i = 0; i < companyIdBaseUrlIdMapping.length; i += batchSize) {
+		const batch = Array.from(
+			new Map(
+				companyIdBaseUrlIdMapping
+					.slice(i, i + batchSize)
+					.map((item) => [`${item.companyId}-${item.baseUrlId}`, item]),
+			).values(),
+		);
 
-	const newRecords = companyIdBaseUrlIdMapping.filter(
-		({ companyId, baseUrlId }) =>
-			!existingCombinations.has(`${companyId}-${baseUrlId}`),
-	);
+		// バッチごとに既存レコードを確認
+		const existingRecords = await prismaClient.accessJudgmentUrl.findMany({
+			where: {
+				OR: batch.map(({ companyId, baseUrlId }) => ({
+					AND: [{ companyId }, { baseUrlId }],
+				})),
+			},
+			select: {
+				companyId: true,
+				baseUrlId: true,
+			},
+		});
 
-	for (let i = 0; i < newRecords.length; i += batchSize) {
-		const batch = newRecords.slice(i, i + batchSize);
+		// 既存レコードの組み合わせをSetで管理
+		const existingSet = new Set(
+			existingRecords.map(
+				(record) => `${record.companyId}-${record.baseUrlId}`,
+			),
+		);
 
-		if (batch.length > 0) {
+		// 新規レコードをフィルタリング
+		const newRecords = batch.filter(
+			({ companyId, baseUrlId }) =>
+				!existingSet.has(`${companyId}-${baseUrlId}`),
+		);
+
+		if (newRecords.length > 0) {
 			await prismaClient.accessJudgmentUrl.createMany({
-				data: batch,
+				data: newRecords,
 			});
 		}
 	}
@@ -106,16 +116,24 @@ export const getAccessJudgmentUrlById = async (
 export const getAccessJudgmentUrlsByCompanyIdsAndBaseUrlIds = async (
 	db: D1Database,
 	companyIdBaseUrlIdMapping: { companyId: string; baseUrlId: string }[],
+	batchSize = 20,
 ): Promise<AccessJudgmentUrl[]> => {
 	const prismaClient = createPrismaClientWithD1(db);
+	const results: AccessJudgmentUrl[] = [];
 
-	return await prismaClient.accessJudgmentUrl.findMany({
-		where: {
-			// biome-ignore lint/style/useNamingConvention:
-			OR: companyIdBaseUrlIdMapping.map(({ companyId, baseUrlId }) => ({
-				companyId,
-				baseUrlId,
-			})),
-		},
-	});
+	// バッチ処理
+	for (let i = 0; i < companyIdBaseUrlIdMapping.length; i += batchSize) {
+		const batch = companyIdBaseUrlIdMapping.slice(i, i + batchSize);
+		const batchResults = await prismaClient.accessJudgmentUrl.findMany({
+			where: {
+				OR: batch.map(({ companyId, baseUrlId }) => ({
+					companyId,
+					baseUrlId,
+				})),
+			},
+		});
+		results.push(...batchResults);
+	}
+
+	return results;
 };
