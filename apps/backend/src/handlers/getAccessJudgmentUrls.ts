@@ -55,6 +55,10 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 		const { companyName, baseUrl, baseUrlTitle, limit, offset, sort, order } =
 			queryParams;
 
+		// Node.js環境では大量データ処理が可能だが、安全のため上限を設定
+		// ユーザーが指定した件数を尊重しつつ、システム保護のため上限値を適用
+		const safeLimit = Math.min(limit, 50000);
+
 		let accessJudgmentUrls: AccessJudgmentUrl[];
 		let totalCount: number;
 
@@ -74,7 +78,7 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 
 			const companyIds = companies.map((company) => company.id);
 			accessJudgmentUrls = await getAccessJudgmentUrlsByCompanyIds(
-				limit,
+				safeLimit,
 				offset,
 				sort,
 				order,
@@ -107,7 +111,7 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 
 			const baseUrlIds = baseUrls.map((baseUrl) => baseUrl.id);
 			accessJudgmentUrls = await getAccessJudgmentUrlsByBaseUrlIds(
-				limit,
+				safeLimit,
 				offset,
 				sort,
 				order,
@@ -126,7 +130,7 @@ export const getAccessJudgmentUrlsHandler: RouteHandler<
 		} else {
 			// 全件検索
 			accessJudgmentUrls = await getAccessJudgmentUrls(
-				limit,
+				safeLimit,
 				offset,
 				sort,
 				order,
