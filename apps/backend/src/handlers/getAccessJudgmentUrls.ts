@@ -1,4 +1,18 @@
+/**
+ * アクセス判定URL一覧取得ハンドラー
+ * Node.js環境でPostgreSQLデータベースに対するアクセス判定URL取得処理
+ *
+ * 主な仕様:
+ * - 条件付きアクセス判定URL検索
+ * - ページネーション対応
+ * - ソート機能
+ * - アクセスログ情報の付与
+ *
+ * 制限事項:
+ * - 取得上限・オフセットの設定必須
+ */
 import type { RouteHandler } from "@hono/zod-openapi";
+import type { AccessJudgmentUrl } from "@prisma/client";
 import type { Context } from "hono";
 import type { z } from "zod";
 import {
@@ -15,123 +29,206 @@ import {
 	getAccessJudgmentUrlsQuerySchema,
 	type getAccessJudgmentUrlsResponseSchema,
 } from "~/schema/accessJudgmentUrl";
+import type { ErrorResponse } from "~/schema/error";
 import { getAccessJudgmentUrl } from "~/utils/getRequestOrigin";
 
 type GetAccessJudgmentUrlsResponse = z.infer<
 	typeof getAccessJudgmentUrlsResponseSchema
 >;
 
+/**
+ * アクセス判定URL一覧取得処理
+ *
+ * 処理フロー:
+ * 1. クエリパラメータの解析
+ * 2. 検索条件に基づくフィルタリング
+ * 3. アクセス判定URL取得
+ * 4. 関連データ（会社・ベースURL・アクセスログ）の取得
+ * 5. レスポンス構築・返却
+ */
 export const getAccessJudgmentUrlsHandler: RouteHandler<
 	typeof getAccessJudgmentUrlsRoute
 > = async (c: Context) => {
-	const db = c.env.DB;
-	const { companyName, baseUrl, limit, offset, sort, order } =
-		getAccessJudgmentUrlsQuerySchema.parse(c.req.query());
+	try {
+		// クエリパラメータの解析
+		const queryParams = getAccessJudgmentUrlsQuerySchema.parse(c.req.query());
+		const { companyName, baseUrl, baseUrlTitle, limit, offset, sort, order } =
+			queryParams;
 
-	const companyRecords = companyName
-		? await getCompaniesByNameLike(db, companyName)
-		: null;
-	const baseUrlRecords = baseUrl
-		? await getBaseUrlsByUrlLike(db, baseUrl)
-		: null;
+		let accessJudgmentUrls: AccessJudgmentUrl[];
+		let totalCount: number;
 
-	const accessJudgmentUrlRecords = companyRecords
-		? await getAccessJudgmentUrlsByCompanyIds(
-				db,
+		// 検索条件に基づくフィルタリング
+		if (companyName) {
+			// 会社名による検索
+			const companies = await getCompaniesByNameLike(companyName);
+			if (companies.length === 0) {
+				return c.json(
+					{
+						accessJudgmentUrls: [],
+						totalCount: 0,
+					} satisfies GetAccessJudgmentUrlsResponse,
+					200,
+				);
+			}
+
+			const companyIds = companies.map((company) => company.id);
+			accessJudgmentUrls = await getAccessJudgmentUrlsByCompanyIds(
 				limit,
 				offset,
 				sort,
 				order,
-				companyRecords.map((c) => c.id),
-			)
-		: baseUrlRecords
-			? await getAccessJudgmentUrlsByBaseUrlIds(
-					db,
-					limit,
-					offset,
-					sort,
-					order,
-					baseUrlRecords.map((b) => b.id),
-				)
-			: await getAccessJudgmentUrls(db, limit, offset, sort, order);
+				companyIds,
+			);
 
-	const totalCount = await getAccessJudgmentUrlsCount(db);
+			// 総件数取得（実装簡略化のため全件取得してカウント）
+			const allAccessJudgmentUrls = await getAccessJudgmentUrlsByCompanyIds(
+				Number.MAX_SAFE_INTEGER,
+				0,
+				sort,
+				order,
+				companyIds,
+			);
+			totalCount = allAccessJudgmentUrls.length;
+		} else if (baseUrl || baseUrlTitle) {
+			// ベースURLまたはタイトルによる検索
+			const searchQuery = baseUrl || baseUrlTitle || "";
+			const baseUrls = await getBaseUrlsByUrlLike(searchQuery);
 
-	// 関連データを一括で取得
-	const accessJudgmentUrlIds = accessJudgmentUrlRecords.map(
-		(record) => record.id,
-	);
-	const companyIds = [
-		...new Set(accessJudgmentUrlRecords.map((record) => record.companyId)),
-	];
-	const baseUrlIds = [
-		...new Set(accessJudgmentUrlRecords.map((record) => record.baseUrlId)),
-	];
-
-	const [
-		accessJudgmentUrlLogRecords,
-		relatedCompanyRecords,
-		relatedBaseUrlRecords,
-	] = await Promise.all([
-		getAccessJudgmentUrlLogsByAccessJudgmentUrlIds(db, accessJudgmentUrlIds),
-		getCompaniesByIds(db, companyIds),
-		getBaseUrlsByIds(db, baseUrlIds),
-	]);
-
-	// 会社レコードをマップ化
-	const companiesById = new Map(
-		relatedCompanyRecords.map((company) => [company.id, company]),
-	);
-
-	// ベースURLレコードをマップ化
-	const baseUrlsById = new Map(
-		relatedBaseUrlRecords.map((baseUrl) => [baseUrl?.id, baseUrl]),
-	);
-
-	const response: GetAccessJudgmentUrlsResponse = {
-		accessJudgmentUrls: accessJudgmentUrlRecords.map(
-			(accessJudgmentUrlRecord) => {
-				const logs = accessJudgmentUrlLogRecords.filter(
-					(log) => log.accessJudgmentUrlId === accessJudgmentUrlRecord.id,
+			if (baseUrls.length === 0) {
+				return c.json(
+					{
+						accessJudgmentUrls: [],
+						totalCount: 0,
+					} satisfies GetAccessJudgmentUrlsResponse,
+					200,
 				);
-				const company = companiesById.get(accessJudgmentUrlRecord.companyId);
-				const baseUrl = baseUrlsById.get(accessJudgmentUrlRecord.baseUrlId);
+			}
 
-				if (!company || !baseUrl) {
-					throw new Error("Company or BaseUrl not found");
-				}
+			const baseUrlIds = baseUrls.map((baseUrl) => baseUrl.id);
+			accessJudgmentUrls = await getAccessJudgmentUrlsByBaseUrlIds(
+				limit,
+				offset,
+				sort,
+				order,
+				baseUrlIds,
+			);
 
-				const lastViewedAt = logs
-					.map((log) => log.createdAt.getTime())
-					.reduce((a, b) => Math.max(a, b), 0);
-				const viewedAts = logs
-					.map((log) => log.createdAt.getTime())
-					.sort((a, b) => b - a)
-					.slice(1);
+			// 総件数取得（実装簡略化のため全件取得してカウント）
+			const allAccessJudgmentUrls = await getAccessJudgmentUrlsByBaseUrlIds(
+				Number.MAX_SAFE_INTEGER,
+				0,
+				sort,
+				order,
+				baseUrlIds,
+			);
+			totalCount = allAccessJudgmentUrls.length;
+		} else {
+			// 全件検索
+			accessJudgmentUrls = await getAccessJudgmentUrls(
+				limit,
+				offset,
+				sort,
+				order,
+			);
+			totalCount = await getAccessJudgmentUrlsCount();
+		}
 
-				return {
-					company: {
-						id: company.id,
-						name: company.name,
-					},
-					baseUrl: {
-						id: baseUrl.id,
-						title: baseUrl.title,
-						url: baseUrl.url,
-					},
-					accessJudgmentUrl: {
-						id: accessJudgmentUrlRecord.id,
-						url: getAccessJudgmentUrl(c, accessJudgmentUrlRecord.id),
-						viewCount: logs.length,
-						createdAt: accessJudgmentUrlRecord.createdAt.getTime(),
-						lastViewedAt: lastViewedAt,
-						viewedAts: viewedAts,
-					},
-				};
-			},
-		),
-		totalCount,
-	};
+		if (accessJudgmentUrls.length === 0) {
+			return c.json(
+				{
+					accessJudgmentUrls: [],
+					totalCount,
+				} satisfies GetAccessJudgmentUrlsResponse,
+				200,
+			);
+		}
 
-	return c.json(response, 200);
+		// 関連データの取得
+		const companyIds = [
+			...new Set(accessJudgmentUrls.map((url) => url.companyId)),
+		];
+		const baseUrlIds = [
+			...new Set(accessJudgmentUrls.map((url) => url.baseUrlId)),
+		];
+		const accessJudgmentUrlIds = accessJudgmentUrls.map((url) => url.id);
+
+		const [companies, baseUrls, accessLogs] = await Promise.all([
+			getCompaniesByIds(companyIds),
+			getBaseUrlsByIds(baseUrlIds),
+			getAccessJudgmentUrlLogsByAccessJudgmentUrlIds(accessJudgmentUrlIds),
+		]);
+
+		// レスポンス構築
+		const responseData = accessJudgmentUrls.map((accessJudgmentUrl) => {
+			const company = companies.find(
+				(c) => c.id === accessJudgmentUrl.companyId,
+			);
+			const baseUrlRecord = baseUrls.find(
+				(b) => b.id === accessJudgmentUrl.baseUrlId,
+			);
+
+			if (!company || !baseUrlRecord) {
+				throw new Error(
+					`Failed to find company or baseUrl for accessJudgmentUrl: ${accessJudgmentUrl.id}, companyId: ${accessJudgmentUrl.companyId}, baseUrlId: ${accessJudgmentUrl.baseUrlId}`,
+				);
+			}
+
+			// このアクセス判定URLに関連するアクセスログを取得
+			const relatedLogs = accessLogs.filter(
+				(log) => log.accessJudgmentUrlId === accessJudgmentUrl.id,
+			);
+
+			const viewedAts = relatedLogs.map((log) => log.createdAt.getTime());
+			const lastViewedAt =
+				viewedAts.length > 0 ? Math.max(...viewedAts) : undefined;
+
+			return {
+				company: {
+					id: company.id,
+					name: company.name,
+				},
+				baseUrl: {
+					id: baseUrlRecord.id,
+					title: baseUrlRecord.title,
+					url: baseUrlRecord.url,
+				},
+				accessJudgmentUrl: {
+					id: accessJudgmentUrl.id,
+					url: getAccessJudgmentUrl(c, accessJudgmentUrl.id),
+					viewCount: relatedLogs.length,
+					createdAt: accessJudgmentUrl.createdAt.getTime(),
+					lastViewedAt,
+					viewedAts: viewedAts.length > 0 ? viewedAts : undefined,
+				},
+			};
+		});
+
+		const response: GetAccessJudgmentUrlsResponse = {
+			accessJudgmentUrls: responseData,
+			totalCount,
+		};
+
+		return c.json(response, 200);
+	} catch (error) {
+		console.error(
+			"Error in getAccessJudgmentUrlsHandler:",
+			error instanceof Error ? error.message : "Unknown error",
+			error instanceof Error ? error.stack : "",
+		);
+
+		return c.json(
+			{
+				error: {
+					message: "Failed to get access judgment URLs",
+					details: [
+						error instanceof Error
+							? error.message
+							: "予期しないエラーが発生しました",
+					],
+				},
+			} satisfies ErrorResponse,
+			500,
+		);
+	}
 };
