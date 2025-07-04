@@ -1,15 +1,15 @@
 {
   "name": "backend",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "tsx watch src/index.ts",
     "build": "pnpm prisma generate && tsc && tsc-alias",
     "format": "pnpm format:biome",
     "format:biome": "pnpm biome check --write ./src",
-    "deploy": "wrangler deploy --minify",
     "start": "node dist/index.js"
   },
   "main": "dist/index.js",
   "dependencies": {
+    "@hono/node-server": "^1.15.0",
     "@hono/swagger-ui": "^0.5.1",
     "@hono/zod-openapi": "^0.19.2",
     "@hono/zod-validator": "^0.4.3",
@@ -26,7 +26,7 @@
     "@cloudflare/workers-types": "^4.20250303.0",
     "@types/node": "20",
     "prisma": "^6.4.1",
-    "typescript": "^5.8.3",
-    "wrangler": "^3.114.0"
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   }
 }
