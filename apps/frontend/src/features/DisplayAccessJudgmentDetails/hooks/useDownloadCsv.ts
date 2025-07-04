@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { GetAccessJudgmentUrlDetailsError } from "../api/errors";
 import { getAccessJudgmentUrlDetails } from "../api/getAccessJudgmentUrlDetails";
 
-export const useDownloadCsv = (searchQuery: string, totalPages: number) => {
+export const useDownloadCsv = (searchQuery: string) => {
 	const [isDownloading, setIsDownloading] = useState(false);
 
 	/**

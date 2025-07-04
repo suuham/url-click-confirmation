@@ -23,10 +23,7 @@ export function AccessJudgmentUrlSearchTable() {
 		totalPages,
 	} = useSearchQuery();
 
-	const { handleDownloadCsv, isDownloading } = useDownloadCsv(
-		searchQuery,
-		totalPages,
-	);
+	const { handleDownloadCsv, isDownloading } = useDownloadCsv(searchQuery);
 
 	/**
 	 * 件数入力値変更処理
