@@ -2,10 +2,13 @@
   "name": "backend",
   "scripts": {
     "dev": "wrangler dev",
+    "build": "pnpm prisma generate && tsc && tsc-alias",
     "format": "pnpm format:biome",
     "format:biome": "pnpm biome check --write ./src",
-    "deploy": "wrangler deploy --minify"
+    "deploy": "wrangler deploy --minify",
+    "start": "node dist/index.js"
   },
+  "main": "dist/index.js",
   "dependencies": {
     "@hono/swagger-ui": "^0.5.1",
     "@hono/zod-openapi": "^0.19.2",
@@ -15,6 +18,7 @@
     "hono": "^4.7.4",
     "hono-openapi": "^0.4.6",
     "resend": "^4.5.1",
+    "tsc-alias": "^1.8.8",
     "zod": "^3.24.2",
     "zod-openapi": "^4.2.3"
   },
@@ -22,6 +26,7 @@
     "@biomejs/biome": "1.9.4",
     "@cloudflare/workers-types": "^4.20250303.0",
     "prisma": "^6.4.1",
+    "typescript": "^5.8.3",
     "wrangler": "^3.114.0"
   }
 }

@@ -5,38 +5,18 @@
   "compatibility_date": "2025-03-07",
   "compatibility_flags": ["nodejs_compat"],
   "build": {
-    "watch_dir": "./src",
+    "watch_dir": "./src"
   },
   "vars": {
-    "RESEND_API_KEY": "",
-    "FROM_MAIL_ADDRESS": "",
-    "TO_MAIL_ADDRESS": "",
+    "RESEND_API_KEY": "re_2AhPtps2_BbfuToxD1j4BbyzKXCdXRymK",
+    "FROM_MAIL_ADDRESS": "access-check@super-hamster.com",
+    "TO_MAIL_ADDRESS": "x-aaaaqixthfjznqhvrhfr2vh2oq@rei-getsu.slack.com"
   },
-  // "kv_namespaces": [
-  //   {
-  //     "binding": "MY_KV_NAMESPACE",
-  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  //   }
-  // ],
-  // "r2_buckets": [
-  //   {
-  //     "binding": "MY_BUCKET",
-  //     "bucket_name": "my-bucket"
-  //   }f
-  // ],
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "url-click-confirmation-db",
-      "database_id": "9e06497d-4872-401d-b92b-88926cb60396",
-    },
-  ],
-
-  // "ai": {
-  //   "binding": "AI"
-  // },
-  // "observability": {
-  //   "enabled": true,
-  //   "head_sampling_rate": 1
-  // }
+      "database_id": "a12b3399-c76a-4172-b5ff-5eced490590b"
+    }
+  ]
 }
