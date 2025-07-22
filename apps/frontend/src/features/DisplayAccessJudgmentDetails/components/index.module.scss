@@ -6,6 +6,13 @@
 
   .access-judgment-url-actions {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
+
+    .download-section {
+      display: flex;
+      gap: $gap-md;
+      align-items: center;
+    }
   }
 }

@@ -1,0 +1,35 @@
+.download-limit-input {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+
+  .label {
+    font-size: $font-size-lg;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .input {
+      width: 120px;
+      height: $xl;
+      padding: 0 10px;
+      font-size: $font-size-lg;
+      text-align: right;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+
+    .unit {
+      font-size: $font-size-lg;
+      font-weight: bold;
+      color: #333;
+    }
+  }
+}
