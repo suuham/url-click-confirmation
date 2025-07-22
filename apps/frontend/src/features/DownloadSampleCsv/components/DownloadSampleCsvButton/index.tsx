@@ -1,16 +1,21 @@
 import { Button } from "@/components/Button";
 import colorStyles from "@/styles/colors.module.scss";
-import { useDownloadFile } from "../../hooks/useDownloadFile";
 
 export function DownloadSampleCsvButton() {
-	const { handleDownloadSampleCsv } = useDownloadFile();
+	// https://docs.google.com/spreadsheets/d/1znfUV2OKH_SAWsrojXSXpJVQGL4_acPo6dCuiXsKRcc/edit?usp=sharing　に飛ばす
+	const handleOpenSampleCsv = () => {
+		window.open(
+			"https://docs.google.com/spreadsheets/d/1znfUV2OKH_SAWsrojXSXpJVQGL4_acPo6dCuiXsKRcc/edit?usp=sharing",
+			"_blank",
+		);
+	};
 	return (
 		<Button
-			text="サンプルダウンロード"
+			text="サンプルCSVを開く"
 			backgroundColor={colorStyles.buttonColorGray}
 			size="sm"
 			isOutline={true}
-			onClick={handleDownloadSampleCsv}
+			onClick={handleOpenSampleCsv}
 		/>
 	);
 }
